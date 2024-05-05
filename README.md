@@ -1,24 +1,41 @@
-# final
+# Voting system
 
-## Project setup
-```
-npm install
-```
+## Description
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Final project for a course WEBTE-2 in FEI STU
 
-### Compiles and minifies for production
-```
+## Table of Contents
+
+- [Installation](#installation)
+
+## Installation
+
+### Prerequisites
+
+- Docker installed on your machine.
+
+### Steps
+
+1. Clone the repository:
+   ```sh
+   git clone https://https://github.com/jdatsenko/webte2_final
+   ```
+2. Change directory to the project root:
+   ```sh
+   cd webte2_final
+   ```
+3. Compose the Docker container:
+   ```sh
+    docker compose up -d
+   ```
+4. Open the application in your browser:
+   ```
+   http://localhost
+   ```
+
+When changing the frontend code, you need to rebuild it:
+
+```sh
+cd src/frontend
 npm run build
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
