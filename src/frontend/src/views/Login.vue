@@ -1,3 +1,7 @@
+<script setup>
+import { t } from "@/i18n";
+</script>
+
 <template>
-Login
+{{ t('Login.title') }}
 </template>

@@ -4,6 +4,7 @@ import { router } from "../router";
 import InputOtp from 'primevue/inputotp';
 import { ref } from 'vue';
 import { useToast } from 'primevue/usetoast';
+import { t } from '@/i18n';
 
 const code = ref('');
 const toast = useToast();
@@ -22,7 +23,8 @@ const handleJoin = () => {
 
 <template>
     <div class="flex flex-column gap-2 align-items-center">
+        <h1>{{ t('Home.join-a-question') }}</h1>
         <InputOtp v-model="code" :length="5" />
-        <Button label="Join" @click="handleJoin" />
+        <Button :label="t('Home.button-join')" @click="handleJoin" />
     </div>
 </template>
