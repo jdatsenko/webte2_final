@@ -5,5 +5,11 @@
   },
   "Login": {
     "title": "Login"
+  },
+  "Register": {
+    "title": "Register"
+  },
+  "App": {
+    "title": "Home"
   }
 }

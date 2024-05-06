@@ -5,5 +5,11 @@
   },
   "Login": {
     "title": "Prihlasit sa"
-  }
+  },
+  "Register": {
+    "title": "Registrovat sa"
+  },
+ "App": {
+    "title": "Domov"
+ }
 }

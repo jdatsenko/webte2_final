@@ -16,3 +16,5 @@ export const { t } = i18n.global
 export const changeLocale = () => {
     i18n.global.locale = i18n.global.locale === 'en' ? 'sk' : 'en'
 }
+
+export default i18n;
