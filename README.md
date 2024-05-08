@@ -28,7 +28,13 @@ Final project for a course WEBTE-2 in FEI STU
    ```sh
     docker compose up -d
    ```
-4. Open the application in your browser:
+4. Build the frontend:
+   ```sh
+    cd src/frontend
+    npm install
+    npm run build
+   ```
+5. Open the application in your browser:
    ```
    http://localhost
    ```
