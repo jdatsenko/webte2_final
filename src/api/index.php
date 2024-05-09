@@ -5,46 +5,47 @@ require_once("./entities/Question.php");
 
 $method = $_SERVER['REQUEST_METHOD'];
 $endpoint = explode('/', $_SERVER['REQUEST_URI'])[2] ?? null;
-$action = explode('/', $_SERVER['REQUEST_URI'])[3] ?? null;
-$id = explode('/', $_SERVER['REQUEST_URI'])[4] ?? null;
+$subEndpoint = explode('/', $_SERVER['REQUEST_URI'])[3] ?? null;
 
 header('Content-Type: application/json');
 
-$userController = new User($connection);
+$userController = new User($connection, $auth);
 $questionController = new Question($connection);
+
+$data = json_decode(file_get_contents('php://input'), true);
 
 if ($method == 'GET') {
   if ($endpoint == 'users') {
-    if ($action == 'all') {
-      $users = $userController->getAllUsers();
-      echo json_encode($users);
-    } else if ($action == 'get') {
-      $user = $userController->getUserById($id);
-      echo json_encode($user);
+    if ($subEndpoint == 'all') {
+      echo $userController->getAllUsers();
+    } else if (is_numeric($subEndpoint)) {
+      echo $userController->getUserById($subEndpoint);
+    } else if ($subEndpoint == 'getInfo') {
+      echo $userController->getUserInfo();
+    } else {
+      echo json_encode(array('error'=> 'Invalid endpoint'));
     }
   } else if ($endpoint == 'questions') {
-    if ($action == 'all') {
-      $questions = $questionController->getAllQuestions();
-      echo json_encode($questions);
-    } else if ($action == 'get') {
-      $question = $questionController->getQuestionByCode($id);
-      echo json_encode($question);
-    }
-  } else if ($endpoint == 'login') {
-    if ($action == 'get') {
-      $email = $_GET('email');
-      $password = $_GET('password');
-
-      $user = $userController->loginUser($email, $password);
-      echo json_encode($user);
+    if ($subEndpoint == 'all') {
+      echo $questionController->getAllQuestions();
+    } else if (is_numeric($subEndpoint)) {
+      echo $questionController->getQuestionByCode($subEndpoint);
+    } else {
+      echo json_encode(array('error'=> ''));
     }
   }
 } else if ($method == 'POST') {
   if ($endpoint == 'users') {
-    if ($action == 'create') {
-      $data = json_decode(file_get_contents('php://input'), true);
-      $user = $userController->createUser($data);
-      echo json_encode($user);
+    if ($subEndpoint == 'register') {
+      echo $userController->registerUser($data);
+    } else if ($subEndpoint == 'login') {
+      echo $userController->loginUser($data);
+    } else if ($subEndpoint == 'logout') {
+      echo $userController->logoutUser();
+    } else if ($subEndpoint == 'makeAdmin') {
+      echo $userController->makeAdminById($data);
+    } else {
+      echo json_encode(array('error'=> 'Invalid endpoint'));
     }
   }
 }

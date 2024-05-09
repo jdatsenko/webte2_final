@@ -45,3 +45,8 @@ When changing the frontend code, you need to rebuild it:
 cd src/frontend
 npm run build
 ```
+
+Database:
+`database.sql` contains the database schema and some sample data. It is necessary to import it into the database named `voting_system`.
+Admin: admin@gmail.com : Admin123
+User: user@user.com : User123+

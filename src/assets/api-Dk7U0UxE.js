@@ -1,4 +1,3 @@
-import { A as defineStore, E as reactive } from "./index-DnPdYued.js";
 function bind(fn, thisArg) {
   return function wrap() {
     return fn.apply(thisArg, arguments);
@@ -2021,26 +2020,13 @@ const GetQuestionByCode = /* @__PURE__ */ ((url) => ({
   get: (code) => {
     return axios.get(url.replace("{code}", code));
   }
-}))("/api/questions/get/{code}");
-const useQuestionStore = () => defineStore("question", () => {
-  const state = reactive({
-    question: null,
-    loading: false,
-    error: null
-  });
-  const getQuestion = async (code) => {
-    state.loading = true;
-    try {
-      const response = await GetQuestionByCode.get(code);
-      state.question = response.data;
-    } catch (error) {
-      state.error = error;
-    } finally {
-      state.loading = false;
-    }
-  };
-  return { state, getQuestion };
-})();
+}))("/api/questions/{code}");
+const Register = /* @__PURE__ */ ((url) => ({
+  post: (data) => {
+    return axios.post(url, data);
+  }
+}))("/api/users/register/");
 export {
-  useQuestionStore as u
+  GetQuestionByCode as G,
+  Register as R
 };
