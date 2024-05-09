@@ -12,6 +12,7 @@ export default defineConfig({
     }
   }],
   build: {
+    minify: false,
     outDir: "../",
   },
   resolve: {  

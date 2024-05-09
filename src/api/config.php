@@ -3,7 +3,7 @@
   $user = 'root';
   $password = 'root';
   $dbname = 'voting_system';
-  $host = 'webte_final-mysql-1';
+  $host = 'final-mysql-1';
 
   $connection = mysqli_connect($host, $user, $password, $dbname);
 

@@ -22,7 +22,7 @@ export const router = createRouter({
       path: "/question/:id(\\w{5})",
       name: "question",
       component: () => import("./views/Question.vue"),
-      props: (route) => ({ id: route.params.id }),
+      props: (route) => ({ code: route.params.id }),
     },
     {
         path: "/:pathMatch(.*)*",
