@@ -30,4 +30,20 @@ class User
     $user = mysqli_fetch_assoc($result);
     return $user;
   }
+
+  public function loginUser($email, $password) {
+    $query = "SELECT * FROM User WHERE email = '$email'";
+    $result = mysqli_query($this->conn, $query);
+    $user = mysqli_fetch_assoc($result);
+
+    if ($user && password_verify($password, $user['password'])) {
+      return $user;
+    } else {
+      if (!$user) {
+        return "User not found.";
+      } else {
+          return "Incorrect password.";
+      }
+    }
+  }
 }

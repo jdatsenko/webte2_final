@@ -30,6 +30,14 @@ if ($method == 'GET') {
       $question = $questionController->getQuestionByCode($id);
       echo json_encode($question);
     }
+  } else if ($endpoint == 'login') {
+    if ($action == 'get') {
+      $email = $_GET('email');
+      $password = $_GET('password');
+
+      $user = $userController->loginUser($email, $password);
+      echo json_encode($user);
+    }
   }
 } else if ($method == 'POST') {
   if ($endpoint == 'users') {
