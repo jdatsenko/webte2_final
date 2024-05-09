@@ -102,7 +102,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `email`, `password`, `username`, `status`, `verified`, `resettable`, `roles_mask`, `registered`, `last_login`, `force_logout`) VALUES
 (1, 'test@gmail.com', '$2y$10$.o0nh/Sk/joxeAGXl8v5CuWj4DA3NIrUyq0VPe/GraenXBqOnZOz.', 'test', 0, 1, 1, 1, 1715292628, 1715294232, 2),
 (2, 'test2@gmail.com', '$2y$10$.08aZdDQuX4Az2jnSNRv5.SHn.RY4q3NxFF6a6HhfejR64fM527W6', 'test', 0, 1, 1, 0, 1715294249, 1715294261, 0),
-(3, 'admin@admin.com', '$2y$10$JNWRhLKHI3.4RXk0xvdzfuvnOHTrqshHbIx9es39jujEDPVZPrsuq', 'admin', 0, 1, 1, 0, 1715295439, NULL, 0),
+(3, 'admin@admin.com', '$2y$10$JNWRhLKHI3.4RXk0xvdzfuvnOHTrqshHbIx9es39jujEDPVZPrsuq', 'admin', 0, 1, 1, 1, 1715295439, NULL, 0),
 (4, 'user@gmail.com', '$2y$10$U2vktfOwnkB.XEql7jOyEu8Kx8TsnFa.SUysoe5opqAxEGMCA475i', 'user', 0, 1, 1, 0, 1715295696, NULL, 0),
 (5, 'test@test.com', '$2y$10$3pqsMV578Ar0aQBavDKK8exDMtDxKNH4gY0wVpU95VT.ua6kHtIS6', 'test', 0, 1, 1, 0, 1715295768, NULL, 0);
 
