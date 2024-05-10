@@ -10,7 +10,7 @@ $subEndpoint = explode('/', $_SERVER['REQUEST_URI'])[3] ?? null;
 header('Content-Type: application/json');
 
 $userController = new User($connection, $auth);
-$questionController = new Question($connection);
+$questionController = new Question($connection, $auth);
 
 $data = json_decode(file_get_contents('php://input'), true);
 
@@ -47,5 +47,12 @@ if ($method == 'GET') {
     } else {
       echo json_encode(array('error'=> 'Invalid endpoint'));
     }
+  } else if ($endpoint == 'questions') {
+    if ($subEndpoint == 'create') {
+      echo $questionController->createQuestion($data);
+    } else {
+      echo json_encode(array('error'=> 'Invalid endpoint'));
+    }
   }
 }
+

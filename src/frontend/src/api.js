@@ -1,11 +1,5 @@
 import axios from "axios";
 
-export const GetQuestionByCode = ((url) => ({
-  get: (code) => {
-    return axios.get(url.replace("{code}", code));
-  },
-}))("/api/questions/{code}");
-
 // ====================
 // Users
 // ====================
@@ -59,3 +53,27 @@ export const MakeUserAdmin = ((url) => ({
     return axios.post(url, id);
   },
 }))("/api/users/makeAdmin");
+
+// ====================
+// Questions
+// ====================
+/**
+ * Get all questions
+ */
+export const GetAllQuestions = ((url) => ({
+  get: () => {
+    return axios.get(url);
+  },
+}))("/api/questions/all");
+
+export const GetQuestionByCode = ((url) => ({
+  get: (code) => {
+    return axios.get(url.replace("{code}", code));
+  },
+}))("/api/questions/{code}");
+
+export const CreateQuestion = ((url) => ({
+  post: (data) => {
+    return axios.post(url, data);
+  },
+}))("/api/questions/create");
