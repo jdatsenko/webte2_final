@@ -108,7 +108,7 @@ class User
       die('Unknown user ID');
     }
   }
-  
+
   public function changePassword($oldPassword, $newPassword)
 {
     try {
@@ -127,4 +127,35 @@ class User
         return json_encode(["success" => false, "message" => "Too many requests"]);
     }
 }
-}
+
+  public function generateVerificationUrl($email)
+  {
+      
+      $selector = base64_encode(random_bytes(9));
+      $token = bin2hex(random_bytes(32));
+      $query = "INSERT INTO email_verification (email, selector, token) VALUES (:email, :selector, :token)";
+      $stmt = $this->conn->prepare($query);
+      $stmt->execute(['email' => $email, 'selector' => $selector, 'token' => $token]);
+
+      $url = 'https://www.example.com/verify_email?selector=' . urlencode($selector) . '&token=' . urlencode($token);
+
+      return $url;
+  }
+
+  // TO DO: sending of the verification email 
+
+  //   public function sendVerificationEmail($email, $selector, $token)
+  //   {
+        
+  //       $url = 'https://www.example.com/verify_email?selector=' . urlencode($selector) . '&token=' . urlencode($token);
+  //       $subject = 'Email Verification';
+  //       $message = 'Click on the following link to verify your email address: ' . $url;
+
+  //       if (mail($email, $subject, $message)) {
+  //           return true;
+  //       } else {
+  //           return false; 
+  //       }
+  //   }
+   }
+
