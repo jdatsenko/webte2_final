@@ -23,7 +23,7 @@ if ($method == 'GET') {
     } else if ($subEndpoint == 'getInfo') {
       echo $userController->getUserInfo();
     } else {
-      echo json_encode(array('error'=> 'Invalid endpoint'));
+      echo json_encode(array('error' => 'Invalid endpoint'));
     }
   } else if ($endpoint == 'questions') {
     if ($subEndpoint == 'all') {
@@ -31,7 +31,7 @@ if ($method == 'GET') {
     } else if (is_numeric($subEndpoint)) {
       echo $questionController->getQuestionByCode($subEndpoint);
     } else {
-      echo json_encode(array('error'=> ''));
+      echo json_encode(array('error' => ''));
     }
   }
 } else if ($method == 'POST') {
@@ -44,15 +44,20 @@ if ($method == 'GET') {
       echo $userController->logoutUser();
     } else if ($subEndpoint == 'makeAdmin') {
       echo $userController->makeAdminById($data);
+    } else if ($subEndpoint == 'changePassword') {
+      // Call the changePassword method
+      echo $userController->changePassword($data['oldPassword'], $data['newPassword']);
     } else {
-      echo json_encode(array('error'=> 'Invalid endpoint'));
+      echo json_encode(array('error' => 'Invalid endpoint'));
     }
   } else if ($endpoint == 'questions') {
     if ($subEndpoint == 'create') {
       echo $questionController->createQuestion($data);
     } else {
-      echo json_encode(array('error'=> 'Invalid endpoint'));
+      echo json_encode(array('error' => 'Invalid endpoint'));
     }
+  } else {
+    // Handle unsupported request methods
+    echo json_encode(array('error' => 'Unsupported request method'));
   }
 }
-

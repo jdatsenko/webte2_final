@@ -108,4 +108,23 @@ class User
       die('Unknown user ID');
     }
   }
+  
+  public function changePassword($oldPassword, $newPassword)
+{
+    try {
+        if (!$this->auth->isLoggedIn()) {
+            throw new \Delight\Auth\NotLoggedInException();
+        }
+        
+        $this->auth->changePassword($oldPassword, $newPassword);
+
+        return json_encode(["success" => true, "message" => "Password has been changed"]);
+    } catch (\Delight\Auth\NotLoggedInException $e) {
+        return json_encode(["success" => false, "message" => "Not logged in"]);
+    } catch (\Delight\Auth\InvalidPasswordException $e) {
+        return json_encode(["success" => false, "message" => "Invalid password(s)"]);
+    } catch (\Delight\Auth\TooManyRequestsException $e) {
+        return json_encode(["success" => false, "message" => "Too many requests"]);
+    }
+}
 }
