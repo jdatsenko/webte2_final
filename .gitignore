@@ -2,3 +2,5 @@
 .idea
 
 src/api/vendor
+src/index.html
+src/assets
