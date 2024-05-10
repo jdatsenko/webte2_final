@@ -2,3 +2,6 @@
 .idea
 
 src/api/vendor
+src/index.html
+src/assets
+src/vote.png
