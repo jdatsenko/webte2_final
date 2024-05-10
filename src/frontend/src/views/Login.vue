@@ -29,14 +29,56 @@
     </div>
   </div>
 </template>
+
 <script setup>
+
+
 import { ref } from "vue";
 import { t } from "@/i18n";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 import { router } from "../router";
+import { useToast } from "primevue/usetoast";
+import { Login } from "@/api";
+
 const email = ref("");
 const password = ref("");
-const login = () => {};
+
+const toast = useToast();
+
+const login = async () => {
+ 
+  if (!email.value || !password.value) {
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: "Email and password are required",
+    });
+    return;
+  }
+
+  
+  const response = await Login.post({ email: email.value, password: password.value });
+
+  
+  if (response.data.success) {
+   
+    toast.add({
+      severity: "success",
+      summary: "Success",
+      detail: response.data.message,
+    });
+    
+    router.push("/dashboard");
+  } else {
+   
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: response.data.message,
+    });
+  }
+};
+
 </script>
