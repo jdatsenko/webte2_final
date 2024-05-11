@@ -86,22 +86,27 @@ const register = async () => {
   <div class="flex justify-content-center flex-wrap">
     <h1 class="p-text-bold p-text-center">{{ t("Register.title") }}</h1>
   </div>
-  <div class="card flex mb-3 justify-content-center">
+  <div class="flex mb-3 justify-content-center">
     <div class="flex flex-column gap-2">
       <label for="username">Username</label>
-      <InputText id="username" v-model="formData.username" />
+      <InputText id="username" v-model="formData.username" class="w-20rem" />
     </div>
   </div>
-  <div class="card flex mb-3 justify-content-center">
+  <div class="flex mb-3 justify-content-center">
     <div class="flex flex-column gap-2">
       <label for="email">Email</label>
-      <InputText id="email" v-model="formData.email" />
+      <InputText id="email" v-model="formData.email" class="w-20rem" />
     </div>
   </div>
-  <div class="card flex my-3 justify-content-center">
+  <div class="flex my-3 justify-content-center">
     <div class="flex flex-column gap-2">
       <label for="value">Password</label>
-      <Password v-model="formData.password" autocomplete="off">
+      <Password
+        v-model="formData.password"
+        autocomplete="off"
+        toggleMask
+        inputClass="w-20rem"
+      >
         <template #footer>
           <Divider />
           <p class="mt-2">Requirements:</p>
@@ -143,18 +148,20 @@ const register = async () => {
       </Password>
     </div>
   </div>
-  <div class="card flex my-3 justify-content-center">
+  <div class="flex my-3 justify-content-center">
     <div class="flex flex-column gap-2">
       <label for="value">Repeat Password</label>
       <Password
         v-model="formData.repeatPassword"
         :feedback="false"
         autocomplete="off"
+        toggleMask
+        inputClass="w-20rem"
       />
     </div>
   </div>
 
-  <div class="card flex justify-content-center">
+  <div class="flex justify-content-center">
     <Button label="Submit" @click="register" />
   </div>
 

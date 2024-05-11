@@ -1,25 +1,80 @@
+<script setup>
+import { ref } from "vue";
+import { t } from "@/i18n";
+import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+import Password from "primevue/password";
+import { router } from "../router";
+import { useToast } from "primevue/usetoast";
+import { Login } from "@/api";
+import { reactive } from "vue";
+
+const formData = reactive({
+  email: "",
+  password: "",
+});
+
+const toast = useToast();
+
+const login = async () => {
+  if (!formData.email || !formData.password) {
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: "Email and password are required",
+    });
+    return;
+  }
+
+  const response = await Login.post({
+    email: formData.email,
+    password: formData.password,
+  });
+
+  if (response.data.success) {
+    toast.add({
+      severity: "success",
+      summary: "Success",
+      detail: response.data.message,
+    });
+
+    router.push("/");
+  } else {
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: response.data.message,
+    });
+  }
+};
+</script>
+
 <template>
   <div class="flex justify-content-center flex-wrap">
     <h1 class="p-text-bold p-text-center">{{ t("Login.title") }}</h1>
   </div>
-  <form @submit.prevent="login">
-    <div class="card flex mb-3 justify-content-center">
-      <div class="flex flex-column gap-2">
-        <label for="email">Email</label>
-        <InputText id="email" v-model="email" />
-      </div>
+  <div class="card flex mb-3 justify-content-center">
+    <div class="flex flex-column gap-2">
+      <label for="email">Email</label>
+      <InputText id="email" v-model="formData.email" class="w-20rem" />
     </div>
-    <div class="card flex my-3 justify-content-center">
-      <div class="flex flex-column gap-2">
-        <label for="password">Password</label>
-        <Password v-model="password" :feedback="false" autocomplete="off" />
-      </div>
+  </div>
+  <div class="card flex my-3 justify-content-center">
+    <div class="flex flex-column gap-2">
+      <label for="password">Password</label>
+      <Password
+        v-model="formData.password"
+        :feedback="false"
+        autocomplete="off"
+        toggleMask
+        inputClass="w-20rem"
+      />
     </div>
+  </div>
 
-    <div class="card flex justify-content-center">
-      <Button label="Submit" />
-    </div>
-  </form>
+  <div class="card flex justify-content-center">
+    <Button label="Submit" @click="login" />
+  </div>
   <div class="flex mt-4 justify-content-center">
     <div class="flex align-items-center">
       <span>Haven't registered yet?</span>
@@ -29,56 +84,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-
-
-import { ref } from "vue";
-import { t } from "@/i18n";
-import Button from "primevue/button";
-import InputText from "primevue/inputtext";
-import Password from "primevue/password";
-import { router } from "../router";
-import { useToast } from "primevue/usetoast";
-import { Login } from "@/api";
-
-const email = ref("");
-const password = ref("");
-
-const toast = useToast();
-
-const login = async () => {
- 
-  if (!email.value || !password.value) {
-    toast.add({
-      severity: "error",
-      summary: "Error",
-      detail: "Email and password are required",
-    });
-    return;
-  }
-
-  
-  const response = await Login.post({ email: email.value, password: password.value });
-
-  
-  if (response.data.success) {
-   
-    toast.add({
-      severity: "success",
-      summary: "Success",
-      detail: response.data.message,
-    });
-    
-    router.push("/dashboard");
-  } else {
-   
-    toast.add({
-      severity: "error",
-      summary: "Error",
-      detail: response.data.message,
-    });
-  }
-};
-
-</script>
