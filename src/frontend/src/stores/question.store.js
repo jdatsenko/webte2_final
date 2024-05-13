@@ -16,13 +16,12 @@ export const useQuestionStore = () =>
       try {
         const response = await GetQuestionByCode.get(code);
         state.question = response.data.data.question;
-        state.answers = response.data.data.answers;
+        state.answers = response.data.data.answers.map(answer => answer.test);
       } catch (error) {
         state.error = error;
       } finally {
         state.loading = false;
       }
     };
-
     return { state, getQuestion };
   })();

@@ -23,5 +23,8 @@ onMounted(async () => {
     <div v-else>
         <h1>{{ state.question.question }}</h1>
         <p>{{ state.question.subject }}</p>
+        <ul>
+      <li v-for="(answer, index) in state.answers" :key="index">{{ answer }}</li>
+    </ul>
     </div>
 </template>
