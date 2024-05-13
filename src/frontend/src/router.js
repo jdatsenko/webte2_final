@@ -24,6 +24,11 @@ export const router = createRouter({
         component: () => import("./views/Register.vue"),
     },
     {
+      path: "/account",
+      name: "account",
+      component: () => import("./views/Account.vue"),
+    },
+    {
       path: "/question/:id(\\w{5})",
       name: "question",
       component: () => import("./views/Question.vue"),

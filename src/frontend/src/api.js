@@ -51,6 +51,15 @@ export const Logout = ((url) => ({
 }))("/api/users/logout");
 
 /**
+ * change Password
+ */
+export const ChangePassword = ((url) => ({
+  post: (data) => {
+    return axios.post(url, data);
+  },
+}))("/api/users/changePassword/");
+
+/**
  * Make user admin
  * @param {number} id
  */

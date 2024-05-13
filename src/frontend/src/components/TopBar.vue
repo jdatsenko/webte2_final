@@ -10,6 +10,7 @@
           <Button v-show="!isLoggedIn" icon="pi pi-user-plus" outlined @click="router.push('/register')" />
           <Button icon="pi pi-book" outlined @click="toggleModal()"/>
           <Button v-show="!isLoggedIn" icon="pi pi-sign-in" @click="router.push('/login')" />
+          <Button v-show="isLoggedIn" icon="pi pi-user" @click="router.push('/account')" />
           <Button v-show="isLoggedIn" icon="pi pi-sign-out" @click="logout()" />
       </div>
   </div>

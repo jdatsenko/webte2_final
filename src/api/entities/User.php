@@ -12,11 +12,12 @@ class User
 
   public function getSession()
   {
-      return json_encode(['isLoggedIn' => $this->auth->isLoggedIn()]);
+    return json_encode(['isLoggedIn' => $this->auth->isLoggedIn()]);
   }
-  public function getUserInfo() {
+  public function getUserInfo()
+  {
     if (!$this->auth->isLoggedIn()) {
-      die(json_encode(['success'=> false,'message'=> 'You are not logged in']));
+      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
     }
     return json_encode(['success' => true, 'username' => $this->auth->getUsername(), "email" => $this->auth->getEmail(), "roles" => $this->auth->getRoles()]);
   }
@@ -24,10 +25,10 @@ class User
   public function getAllUsers()
   {
     if (!$this->auth->isLoggedIn()) {
-      die(json_encode(['success'=> false,'message'=> 'You are not logged in']));
+      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
     }
     if (!$this->auth->isAdmin()) {
-      die(json_encode(['success'=> false,'message'=> 'You are not an admin']));
+      die(json_encode(['success' => false, 'message' => 'You are not an admin']));
     }
     $query = "SELECT * FROM User";
     $result = mysqli_query($this->conn, $query);
@@ -95,7 +96,7 @@ class User
   public function makeAdminById($data)
   {
     if (!$this->auth->isLoggedIn()) {
-      die(json_encode(['success'=> false,'message'=> 'You are not logged in']));
+      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
     }
     $userId = $data["userId"] ?? null;
     if (empty($userId)) {
@@ -114,43 +115,43 @@ class User
   }
 
   public function changePassword($oldPassword, $newPassword)
-{
+  {
     try {
-        if (!$this->auth->isLoggedIn()) {
-            throw new \Delight\Auth\NotLoggedInException();
-        }
-        
-        $this->auth->changePassword($oldPassword, $newPassword);
+      if (!$this->auth->isLoggedIn()) {
+        throw new \Delight\Auth\NotLoggedInException();
+      }
 
-        return json_encode(["success" => true, "message" => "Password has been changed"]);
+      $this->auth->changePassword($oldPassword, $newPassword);
+
+      return json_encode(["success" => true, "message" => "Password has been changed"]);
     } catch (\Delight\Auth\NotLoggedInException $e) {
-        return json_encode(["success" => false, "message" => "Not logged in"]);
+      return json_encode(["success" => false, "message" => "Not logged in"]);
     } catch (\Delight\Auth\InvalidPasswordException $e) {
-        return json_encode(["success" => false, "message" => "Invalid password(s)"]);
+      return json_encode(["success" => false, "message" => "Invalid password(s)"]);
     } catch (\Delight\Auth\TooManyRequestsException $e) {
-        return json_encode(["success" => false, "message" => "Too many requests"]);
+      return json_encode(["success" => false, "message" => "Too many requests"]);
     }
-}
+  }
 
   public function generateVerificationUrl($email)
   {
-      
-      $selector = base64_encode(random_bytes(9));
-      $token = bin2hex(random_bytes(32));
-      $query = "INSERT INTO email_verification (email, selector, token) VALUES (:email, :selector, :token)";
-      $stmt = $this->conn->prepare($query);
-      $stmt->execute(['email' => $email, 'selector' => $selector, 'token' => $token]);
 
-      $url = 'https://www.example.com/verify_email?selector=' . urlencode($selector) . '&token=' . urlencode($token);
+    $selector = base64_encode(random_bytes(9));
+    $token = bin2hex(random_bytes(32));
+    $query = "INSERT INTO email_verification (email, selector, token) VALUES (:email, :selector, :token)";
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute(['email' => $email, 'selector' => $selector, 'token' => $token]);
 
-      return $url;
+    $url = 'https://www.example.com/verify_email?selector=' . urlencode($selector) . '&token=' . urlencode($token);
+
+    return $url;
   }
 
   // TO DO: sending of the verification email 
 
   //   public function sendVerificationEmail($email, $selector, $token)
   //   {
-        
+
   //       $url = 'https://www.example.com/verify_email?selector=' . urlencode($selector) . '&token=' . urlencode($token);
   //       $subject = 'Email Verification';
   //       $message = 'Click on the following link to verify your email address: ' . $url;
@@ -161,5 +162,4 @@ class User
   //           return false; 
   //       }
   //   }
-   }
-
+}
