@@ -45,7 +45,14 @@ if ($method == 'GET') {
       echo $userController->loginUser($data);
     } else if ($subEndpoint == 'logout') {
       echo $userController->logoutUser();
-    } else if ($subEndpoint == 'makeAdmin') {
+    }  else if($subEndpoint = "getInfo"){
+      echo $userController->getUserInfo($data);
+    } else if($subEndpoint = "getSession"){
+      echo $userController->getSession($data);
+    } else if($subEndpoint = "makeAdmin"){
+      echo $userController->makeAdminById($data);
+    }
+    else if ($subEndpoint == 'makeAdmin') {
       echo $userController->makeAdminById($data);
     } else if ($subEndpoint == 'changePassword') {
       // Call the changePassword method
@@ -56,6 +63,8 @@ if ($method == 'GET') {
   } else if ($endpoint == 'questions') {
     if ($subEndpoint == 'create') {
       echo $questionController->createQuestion($data);
+    } else if($subEndpoint = "getCode"){
+      echo $questionController->generateCode();
     } else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }

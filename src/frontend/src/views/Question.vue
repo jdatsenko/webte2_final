@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useQuestionStore } from '../stores/question.store';
-
+import { t } from "@/i18n";
 import Fieldset from 'primevue/fieldset';
 
 import RadioButton from 'primevue/radiobutton';
@@ -22,7 +22,7 @@ onMounted(async () => {
         <h1>Loading...</h1>
     </div>
     <div v-else-if="state.question == null">
-        <h1>Question not found</h1>
+        <h1>{{ t('Question.not-found') }}</h1>
     </div>
     <div v-else>
         <div class="card flex justify-content-center">

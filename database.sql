@@ -30,7 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `Answer` (
   `id` int NOT NULL,
   `question_id` int NOT NULL,
-  `isRight` tinyint(1) NOT NULL
+  `isRight` tinyint(1) NOT NULL,
+  `answer` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
