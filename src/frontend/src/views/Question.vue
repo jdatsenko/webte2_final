@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useQuestionStore } from '../stores/question.store';
-
+import { t } from "@/i18n";
 import Fieldset from 'primevue/fieldset';
 
 import RadioButton from 'primevue/radiobutton';

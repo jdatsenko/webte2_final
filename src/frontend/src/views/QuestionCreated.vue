@@ -8,6 +8,7 @@
 <script>
     import Button from 'primevue/button';
     import { router } from "../router";
+    import { t } from "@/i18n";
 export default {
   data() {
     return {
