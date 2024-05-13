@@ -1,7 +1,10 @@
 <template>
   <div v-if="!loading">
   <div class="fixed w-full h-4rem top-0 left-0 py-2 px-4 shadow-2 flex align-items-center justify-content-between" style="z-index: 999;">
+    <div class="flex items-center justify-center">
       <span class="text-lg font-bold cursor-pointer" @click="router.push('/')">{{ t('App.title') }}</span>
+      <span v-show="isLoggedIn" class="text-lg font-bold cursor-pointer ml-4" @click="router.push('/create')">Create</span>
+  </div>
       <div class="flex gap-2">
           <Button icon="pi pi-globe" outlined @click="changeLocale()" />
           <Button v-show="!isLoggedIn" icon="pi pi-user-plus" outlined @click="router.push('/register')" />
