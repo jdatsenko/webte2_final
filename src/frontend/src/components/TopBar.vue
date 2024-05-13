@@ -7,6 +7,7 @@
           <Button v-show="!isLoggedIn" icon="pi pi-user-plus" outlined @click="router.push('/register')" />
           <Button icon="pi pi-book" outlined @click="toggleModal()"/>
           <Button v-show="!isLoggedIn" icon="pi pi-sign-in" @click="router.push('/login')" />
+          <Button v-show="isLoggedIn" icon="pi pi-sign-out" @click="logout()" />
       </div>
   </div>
   <div class="fixed items-center justify-center left-0 py-2 px-4" style="top: 6rem;z-index: 1000" v-if="isModalOpen">
@@ -26,13 +27,15 @@
 
 <script setup>
 import Button from 'primevue/button';
+import { useToast } from "primevue/usetoast";
 import { router } from "../router";
 import { changeLocale } from "../i18n";
 import { t } from "@/i18n";
 import { ref } from 'vue';
 import { exportToPDF } from '../manual';
-import { IsLoggedIn } from '@/api.js';
+import { IsLoggedIn, Logout  } from '@/api.js';
 
+const toast = useToast();
 const isModalOpen = ref(false);
 const isLoggedIn = ref(false);
 const loading = ref(true); 
@@ -46,6 +49,27 @@ IsLoggedIn.get()
   .finally(() => {
       loading.value = false; 
   });
+
+const logout = () => {
+  Logout.post()
+    .then(response => {
+      if(isLoggedIn.value == true){
+        toast.add({
+          severity: "success",
+          summary: "Success",
+          detail: "Logged out",
+        });
+      }
+      isLoggedIn.value = response.data.Logout;
+      router.push("/login");
+    })
+    .catch(error => {
+        console.error('Error fetching authentication status:', error);
+    })
+    .finally(() => {
+        loading.value = false; 
+  });
+}
 
 const toggleModal = () => {
   isModalOpen.value = !isModalOpen.value;
