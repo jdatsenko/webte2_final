@@ -22,7 +22,7 @@ onMounted(async () => {
         <h1>Loading...</h1>
     </div>
     <div v-else-if="state.question == null">
-        <h1>Question not found</h1>
+        <h1>{{ t('Question.not-found') }}</h1>
     </div>
     <div v-else>
         <div class="card flex justify-content-center">

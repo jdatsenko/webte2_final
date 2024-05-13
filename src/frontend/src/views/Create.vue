@@ -1,27 +1,27 @@
 <template>
     <div class="flex flex-column align-items-center justify-content-center">
-      <h1>Create Question</h1>
+      <h1>{{ t('Create.title') }}</h1>
       <form @submit.prevent="handleSubmit" class="flex flex-column mx-auto grid justify-content-center">
         <div class="flex flex-column align-items-center justify-content-center">
           <div class="field mb-2">
-            <label for="question" class="block">Question:</label>
+            <label for="question" class="block">{{ t('Create.question') }}</label>
             <InputText id="question" type="text" v-model="questionText" class="input-lg"/>
           </div>
           <div class="field mb-2">
-            <label for="subject" class="block">Subject:</label>
+            <label for="subject" class="block">{{ t('Create.subject') }}</label>
             <InputText id="subject" type="text" v-model="subject" class="input-lg"/>
           </div>
   
           <div v-for="(answer, index) in answers" :key="index" class="field mb-2">
             <div class="flex align-items-center">
               <Checkbox v-model="checked[index]" :binary="true" class="mr-2 mb-1"/>
-              <label :for="'answer' + index" class="block">Answer {{ index + 1 }}:</label>
+              <label :for="'answer' + index" class="block">{{ t('Create.answer') }} {{ index + 1 }}:</label>
             </div>
             <InputText :id="'answer' + index" type="text" v-model="answers[index]" class="input-lg"/>
           </div>
           
           <div class="flex align-items-center justify-content-center">
-            <Button type="submit" label="Submit"/>
+            <Button type="submit">{{ $t('Create.button-create') }}</Button>
           </div>
         </div>
       </form>
@@ -29,6 +29,7 @@
   </template>
   
   <script setup>
+  import { t } from "@/i18n";
   import axios from 'axios';
   import { ref } from 'vue';
   import { useToast } from 'primevue/usetoast';

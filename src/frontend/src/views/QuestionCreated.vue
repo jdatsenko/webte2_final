@@ -1,10 +1,13 @@
 <template>
   <div class="container">
-    <h1 class="text">Question created with code: {{ questionCode }}</h1>
+    <h1 class="text">{{ $t('Created.title') }} {{ questionCode }}</h1>
   </div>
+  
 </template>
 
 <script>
+    import Button from 'primevue/button';
+    import { router } from "../router";
 export default {
   data() {
     return {
