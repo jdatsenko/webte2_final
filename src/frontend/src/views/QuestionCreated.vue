@@ -1,3 +1,36 @@
 <template>
-    <h1> Question created with code :</h1>
+  <div class="container">
+    <h1 class="text">Question created with code: {{ questionCode }}</h1>
+  </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      questionCode: null
+    };
+  },
+  mounted() {
+    this.questionCode = this.$route.query.code;
+  }
+};
+</script>
+
+<style>
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40vh; 
+}
+
+.text {
+  color: rgb(164, 63, 63);
+  font-size: 40px; 
+  text-align: center;
+}
+</style>
+
+
+  

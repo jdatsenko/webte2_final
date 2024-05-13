@@ -83,3 +83,9 @@ export const CreateQuestion = ((url) => ({
     return axios.post(url, data);
   },
 }))("/api/questions/create");
+
+export const getCode = ((url) => ({
+  get: () => {
+    return axios.get(url);
+  },
+}))("/api/questions/getCode");
