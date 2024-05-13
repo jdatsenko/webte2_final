@@ -6,6 +6,7 @@ export const useQuestionStore = () =>
   defineStore("question", () => {
     const state = reactive({
       question: null,
+      answers: [],
       loading: false,
       error: null,
     });
@@ -14,7 +15,8 @@ export const useQuestionStore = () =>
       state.loading = true;
       try {
         const response = await GetQuestionByCode.get(code);
-        state.question = response.data;
+        state.question = response.data.data.question;
+        state.answers = response.data.data.answers;
       } catch (error) {
         state.error = error;
       } finally {

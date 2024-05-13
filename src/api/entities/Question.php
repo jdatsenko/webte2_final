@@ -23,7 +23,19 @@ class Question
     $query = "SELECT * FROM Question WHERE code LIKE '$code'";
     $result = mysqli_query($this->conn, $query);
     $question = mysqli_fetch_assoc($result);
-    return json_encode($question);
+    if (!$question) {
+      die(json_encode(["status" => "error", "message" => "Question not found"]));
+    }
+
+    $answersQuery = "SELECT * FROM Response WHERE question_id = " . $question["id"];
+    $answersResult = mysqli_query($this->conn, $answersQuery);
+    $answers = [];
+    while ($row = mysqli_fetch_assoc($answersResult)) {
+      $answers[] = $row;
+    }
+
+    return json_encode(["success" => true, "data" => ["question" => $question, "answers" => $answers]]);
+
   }
 
   private function generateCode() {

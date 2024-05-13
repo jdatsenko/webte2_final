@@ -28,10 +28,10 @@ if ($method == 'GET') {
   } else if ($endpoint == 'questions') {
     if ($subEndpoint == 'all') {
       echo $questionController->getAllQuestions();
-    } else if (is_numeric($subEndpoint)) {
+    } else if ($subEndpoint) {
       echo $questionController->getQuestionByCode($subEndpoint);
     } else {
-      echo json_encode(array('error' => ''));
+      echo json_encode(array('error' => 'Invalid question endpoint'));
     }
   }
 } else if ($method == 'POST') {
