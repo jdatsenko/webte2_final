@@ -24,7 +24,7 @@ class Question
     $result = mysqli_query($this->conn, $query);
     $question = mysqli_fetch_assoc($result);
     if (!$question) {
-      die(json_encode(["status" => "error", "message" => "Question not found"]));
+      die(json_encode(["success" => false, "message" => "Question not found"]));
     }
 
     $answersQuery = "SELECT test FROM Response WHERE question_id = " . $question["id"];
@@ -49,20 +49,20 @@ class Question
 
   public function createQuestion($data) {
     if (!$this->auth->isLoggedIn()) {
-        die(json_encode(["status" => "error", "message" => "You are not logged in"]));
+        die(json_encode(["success" => false, "message" => "You are not logged in"]));
     }
     $userId = $this->auth->getUserId();
     $type = $data["type"] ?? null;
     if ($type !== "choice" && $type !== "answer") {
-        die(json_encode(["status" => "error", "message" => "Invalid question type"]));
+        die(json_encode(["success" => false, "message" => "Invalid question type"]));
     }
     $subject = $data["subject"] ?? null;
-    $question = $data["question"] ?? null;
+    $question = $data["text"] ?? null;
     if (!$subject) {
-        die(json_encode(["status" => "error", "message" => "Subject is required"]));
+        die(json_encode(["success" => false, "message" => "Subject is required"]));
     }
     if (!$question) {
-        die(json_encode(["status" => "error", "message" => "Question is required"]));
+        die(json_encode(["success" => false, "message" => "Question is required"]));
     }
 
     // Generate and ensure code uniqueness
@@ -70,7 +70,7 @@ class Question
     $queryControl = "SELECT * FROM Question WHERE code LIKE '$code'";
     $queryControlResult = mysqli_query($this->conn, $queryControl);
     if (!$queryControlResult) {
-        die(json_encode(["status" => "error", "message" => "Error checking code uniqueness"]));
+        die(json_encode(["success" => false, "message" => "Error checking code uniqueness"]));
     }
     while (mysqli_num_rows($queryControlResult) > 0) {
         $code = $this->generateCode();
@@ -86,7 +86,7 @@ class Question
     if ($type == 'choice') {
         $answers = $data["answers"] ?? null;
         if (!$answers) {
-            die(json_encode(["status" => "error", "message" => "Answers are required for choice questions"]));
+            die(json_encode(["success" => false, "message" => "Answers are required for choice questions"]));
         }
         $answerController = new Answer($this->conn, $this->auth);
         foreach ($answers as $answer) {
@@ -95,7 +95,7 @@ class Question
     }
 
     // Return question ID and code
-    return json_encode(["status"=> "success", "message"=> "Question created successfully", "data"=> ["questionId" => $questionId, "code" => $code]]);
+    return json_encode(["success"=> true, "message"=> "Question created successfully", "data"=> ["questionId" => $questionId, "code" => $code]]);
 }
 
 }

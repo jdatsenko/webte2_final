@@ -10,16 +10,13 @@ class User
     $this->auth = $auth;
   }
 
-  public function getSession()
-  {
-    return json_encode(['isLoggedIn' => $this->auth->isLoggedIn()]);
-  }
   public function getUserInfo()
   {
     if (!$this->auth->isLoggedIn()) {
       die(json_encode(['success' => false, 'message' => 'You are not logged in']));
     }
-    return json_encode(['success' => true, 'username' => $this->auth->getUsername(), "email" => $this->auth->getEmail(), "roles" => $this->auth->getRoles()]);
+    $data = ['username' => $this->auth->getUsername(), "email" => $this->auth->getEmail(), "roles" => $this->auth->getRoles()];
+    return json_encode(['success' => true, 'data'=> $data]);
   }
 
   public function getAllUsers()
@@ -70,7 +67,7 @@ class User
     }
 
     try {
-      $this->auth->login($email, $password);
+      $this->auth->login($email, $password, 60 * 60 * 24);
       echo json_encode(["success" => true, "message" => "Logged in"]);
     } catch (\Delight\Auth\InvalidEmailException $e) {
       die(json_encode(['success' => false, 'message' => 'Wrong email address']));

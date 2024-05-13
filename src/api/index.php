@@ -22,8 +22,6 @@ if ($method == 'GET') {
       echo $userController->getUserById($subEndpoint);
     } else if ($subEndpoint == 'getInfo') {
       echo $userController->getUserInfo();
-    } else if ($subEndpoint == 'getSession') {
-      echo $userController->getSession();
     }
     else {
       echo json_encode(array('error' => 'Invalid endpoint'));
@@ -45,10 +43,6 @@ if ($method == 'GET') {
       echo $userController->loginUser($data);
     } else if ($subEndpoint == 'logout') {
       echo $userController->logoutUser();
-    }  else if($subEndpoint = "getInfo"){
-      echo $userController->getUserInfo($data);
-    } else if($subEndpoint = "getSession"){
-      echo $userController->getSession($data);
     } else if($subEndpoint = "makeAdmin"){
       echo $userController->makeAdminById($data);
     }
@@ -63,8 +57,6 @@ if ($method == 'GET') {
   } else if ($endpoint == 'questions') {
     if ($subEndpoint == 'create') {
       echo $questionController->createQuestion($data);
-    } else if($subEndpoint = "getCode"){
-      echo $questionController->generateCode();
     } else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }

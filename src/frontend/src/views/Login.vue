@@ -8,6 +8,7 @@ import { router } from "../router";
 import { useToast } from "primevue/usetoast";
 import { Login } from "@/api";
 import { reactive } from "vue";
+import { useUserStore } from "../stores/user.store";
 
 const formData = reactive({
   email: "",
@@ -15,6 +16,8 @@ const formData = reactive({
 });
 
 const toast = useToast();
+
+const { getUserInfo } = useUserStore();
 
 const login = async () => {
   if (!formData.email || !formData.password) {
@@ -38,6 +41,7 @@ const login = async () => {
       detail: response.data.message,
     });
 
+    await getUserInfo();
     router.push("/");
   } else {
     toast.add({
