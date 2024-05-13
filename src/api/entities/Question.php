@@ -27,7 +27,7 @@ class Question
       die(json_encode(["success" => false, "message" => "Question not found"]));
     }
 
-    $answersQuery = "SELECT test FROM Response WHERE question_id = " . $question["id"];
+    $answersQuery = "SELECT id, answer FROM Answer WHERE question_id = " . $question["id"];
     $answersResult = mysqli_query($this->conn, $answersQuery);
     $answers = [];
     while ($row = mysqli_fetch_assoc($answersResult)) {

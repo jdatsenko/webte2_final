@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useQuestionStore } from "../stores/question.store";
 import { t } from "@/i18n";
 import Fieldset from "primevue/fieldset";
@@ -10,8 +10,10 @@ const { state, getQuestion } = useQuestionStore();
 
 const { code } = defineProps(["code"]);
 
+const selectedAnswer = ref(null);
+
 onMounted(async () => {
-  if (state.question === null) {
+  if (state.question === null || state.question.code !== code) {
     await getQuestion(code);
   }
 });
@@ -39,9 +41,10 @@ onMounted(async () => {
                 v-model="selectedAnswer"
                 :inputId="'answer' + index"
                 name="answers"
-                :value="answer"
               />
-              <label :for="'answer' + index" class="ml-2">{{ answer }}</label>
+              <label :for="'answer' + index" class="ml-2">{{
+                answer.answer
+              }}</label>
             </div>
           </div>
         </div>

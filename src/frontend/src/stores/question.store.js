@@ -16,7 +16,7 @@ export const useQuestionStore = () =>
       try {
         const response = await GetQuestionByCode.get(code);
         state.question = response.data.data.question;
-        state.answers = response.data.data.answers.map(answer => answer.test);
+        state.answers = response.data.data.answers;
       } catch (error) {
         state.error = error;
       } finally {
