@@ -14,6 +14,12 @@ export const GetUserInfo = ((url) => ({
   },
 }))("/api/users/getInfo");
 
+export const IsLoggedIn = ((url) => ({
+  get: () => {
+    return axios.get(url);
+  },
+}))("/api/users/getSession");
+
 /**
  * Login
  */

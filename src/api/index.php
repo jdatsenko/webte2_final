@@ -22,7 +22,10 @@ if ($method == 'GET') {
       echo $userController->getUserById($subEndpoint);
     } else if ($subEndpoint == 'getInfo') {
       echo $userController->getUserInfo();
-    } else {
+    } else if ($subEndpoint == 'getSession') {
+      echo $userController->getSession();
+    }
+    else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }
   } else if ($endpoint == 'questions') {

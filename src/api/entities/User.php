@@ -10,6 +10,10 @@ class User
     $this->auth = $auth;
   }
 
+  public function getSession()
+  {
+      return json_encode(['isLoggedIn' => $this->auth->isLoggedIn()]);
+  }
   public function getUserInfo() {
     if (!$this->auth->isLoggedIn()) {
       die(json_encode(['success'=> false,'message'=> 'You are not logged in']));
