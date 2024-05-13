@@ -2,6 +2,10 @@
 import { onMounted } from 'vue';
 import { useQuestionStore } from '../stores/question.store';
 
+import Fieldset from 'primevue/fieldset';
+
+import RadioButton from 'primevue/radiobutton';
+
 const { state, getQuestion } = useQuestionStore();
 
 const { code } = defineProps(['code']);
@@ -21,10 +25,19 @@ onMounted(async () => {
         <h1>Question not found</h1>
     </div>
     <div v-else>
-        <h1>{{ state.question.question }}</h1>
-        <p>{{ state.question.subject }}</p>
-        <ul>
-      <li v-for="(answer, index) in state.answers" :key="index">{{ answer }}</li>
-    </ul>
+        <div class="card flex justify-content-center">
+    <Fieldset :legend="state.question.subject" style="width: 50%;">
+      <h1>{{ state.question.question }}</h1>
+      <div class="card flex">
+      <div class="flex flex-column gap-3">
+        <div v-for="(answer, index) in state.answers" :key="index" class="flex align-items-center">
+          <RadioButton v-model="selectedAnswer" :inputId="'answer' + index" name="answers" :value="answer" />
+          <label :for="'answer' + index" class="ml-2">{{ answer }}</label>
+        </div>
+      </div>
+    </div>
+    </Fieldset>
+  </div>
+    
     </div>
 </template>
