@@ -23,7 +23,7 @@ onMounted(async () => {
       <h1 class="p-text-bold p-text-center">{{ t("Account.title") }}</h1>
       <Button
         label="Change Password"
-        @click="router.push('/user/change-password')"
+        @click="router.push('/user/password')"
       />
     </div>
 
