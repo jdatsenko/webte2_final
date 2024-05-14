@@ -6,13 +6,64 @@ import Button from "primevue/button";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Tag from "primevue/tag";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
+import SplitButton from "primevue/splitbutton";
+import { useToast } from "primevue/usetoast";
+import Dialog from "primevue/dialog";
+import VueQrcode from "@chenfengyuan/vue-qrcode";
 
 const { state, getUserQuestions } = useUserStore();
+
+const toast = useToast();
 
 onMounted(async () => {
   await getUserQuestions();
 });
+
+const splitButtonItems = [
+  {
+    label: "Edit",
+    command: () => {
+      toast.add({
+        severity: "success",
+        summary: "Edit",
+        detail: "Edit",
+        life: 3000,
+      });
+    },
+  },
+  {
+    label: "Duplicate",
+    command: () => {
+      toast.add({
+        severity: "warn",
+        summary: "Duplicate",
+        detail: "Duplicate",
+        life: 3000,
+      });
+    },
+  },
+  {
+    label: "Delete",
+    command: () => {
+      toast.add({
+        severity: "warn",
+        summary: "Delete",
+        detail: "Delete",
+        life: 3000,
+      });
+    },
+    // { label: 'Upload', to: '/fileupload' } // to navigate to another route
+  },
+];
+
+const showQRCode = (code) => {
+  isDialogVisible.value = true;
+  qrCodeURL.value = `${window.location.origin}/question/${code}`;
+};
+
+const isDialogVisible = ref(false);
+const qrCodeURL = ref("");
 </script>
 
 <template>
@@ -21,14 +72,11 @@ onMounted(async () => {
       class="flex gap-4 align-items-center justify-content-between flex-column md:flex-row"
     >
       <h1 class="p-text-bold p-text-center">{{ t("Account.title") }}</h1>
-      <Button
-        label="Change Password"
-        @click="router.push('/user/password')"
-      />
+      <Button label="Change Password" @click="router.push('/user/password')" />
     </div>
 
     <div>
-      <h3>Questions:</h3>
+      <h3>My questions:</h3>
       <DataTable
         :value="state.questions"
         paginator
@@ -44,7 +92,7 @@ onMounted(async () => {
                 params: { code: slotProps.data.code },
               }"
             >
-              {{ slotProps.data.code }}
+              <b>{{ slotProps.data.code }}</b>
             </router-link>
           </template>
         </Column>
@@ -60,7 +108,44 @@ onMounted(async () => {
             />
           </template>
         </Column>
+        <Column
+          :pt="{
+            bodyCell: 'text-center',
+          }"
+        >
+          <template #header>
+            <span class="flex-1 text-center">Actions</span>
+          </template>
+          <template #body="slotProps">
+            <SplitButton
+              :model="splitButtonItems"
+              label="Show QR Code"
+              @click="showQRCode(slotProps.data.code)"
+            />
+          </template>
+        </Column>
       </DataTable>
     </div>
   </div>
+
+  <Dialog
+    v-model:visible="isDialogVisible"
+    modal
+    :pt="{
+      root: 'border-none',
+      mask: {
+        style: 'backdrop-filter: blur(2px)',
+      },
+    }"
+  >
+    <template #container="{ closeCallback }">
+      <div class="flex flex-column px-5 py-5 gap-2" style="border-radius: 12px">
+        <span class="text-center" style="color: var(--text-color-secondary)">
+          Scan the QR Code
+        </span>
+        <VueQrcode :value="qrCodeURL" :options="{ width: 300 }" />
+        <Button label="Close" @click="closeCallback" />
+      </div>
+    </template>
+  </Dialog>
 </template>

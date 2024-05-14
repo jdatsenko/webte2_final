@@ -124,6 +124,6 @@ class Question
     while ($row = mysqli_fetch_assoc($query)) {
       $questionResponses[] = $row;
     }
-    return json_encode(["success"=> true, "data"=> $questionResponses]);
+    return json_encode(["success"=> true, "data"=> ["question" => $question["data"]["question"], "responses" => $questionResponses]]);
   }
 }

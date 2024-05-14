@@ -10,11 +10,13 @@ const toast = useToast();
 const { code } = defineProps(["code"]);
 
 const responses = ref([]);
+const question = ref({});
 
 onMounted(async () => {
   const res = await GetQuestionResponses.post({ code });
   if (res.data.success) {
-    responses.value = res.data.data;
+    responses.value = res.data.data.responses;
+    question.value = res.data.data.question;
   } else {
     toast.add({
       severity: "error",
@@ -33,7 +35,9 @@ onMounted(async () => {
         icon="pi pi-chevron-left"
         v-tooltip="{ value: 'Back', showDelay: 1000, hideDelay: 300 }"
       />
-      <h1 class="p-text-bold p-text-center">{{ t("Account.title") }}</h1>
+      <h1>
+        {{ question.question }}
+      </h1>
     </div>
   </div>
 </template>
