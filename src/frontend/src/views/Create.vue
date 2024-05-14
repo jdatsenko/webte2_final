@@ -155,7 +155,11 @@ function removeAnswer(index) {
       <Checkbox
         v-model="answer.isRight"
         :binary="true"
-        v-tooltip="'Is this the right answer?'"
+        v-tooltip="{
+          value: 'Is this the right answer?',
+          showDelay: 500,
+          hideDelay: 300,
+        }"
       />
       <InputText
         :placeholder="`Answer ${index + 1}`"

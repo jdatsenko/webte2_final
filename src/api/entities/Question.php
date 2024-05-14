@@ -1,7 +1,7 @@
 <?php
 require_once("Answer.php");
 
-class Question 
+class Question
 {
   private $conn;
   private $auth;
@@ -12,14 +12,16 @@ class Question
     $this->auth = $auth;
   }
 
-  public function getAllQuestions() {
+  public function getAllQuestions()
+  {
     $query = "SELECT * FROM Question";
     $result = mysqli_query($this->conn, $query);
     $questions = mysqli_fetch_assoc($result);
     return json_encode($questions);
   }
 
-  public function getQuestionByCode($code) {
+  public function getQuestionByCode($code)
+  {
     $query = "SELECT * FROM Question WHERE code LIKE '$code'";
     $result = mysqli_query($this->conn, $query);
     $question = mysqli_fetch_assoc($result);
@@ -35,10 +37,10 @@ class Question
     }
 
     return json_encode(["success" => true, "data" => ["question" => $question, "answers" => $answers]]);
-
   }
 
-  public function generateCode() {
+  public function generateCode()
+  {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $code = '';
     for ($i = 0; $i < 5; $i++) {
@@ -47,22 +49,23 @@ class Question
     return $code;
   }
 
-  public function createQuestion($data) {
+  public function createQuestion($data)
+  {
     if (!$this->auth->isLoggedIn()) {
-        die(json_encode(["success" => false, "message" => "You are not logged in"]));
+      die(json_encode(["success" => false, "message" => "You are not logged in"]));
     }
     $userId = $this->auth->getUserId();
     $type = $data["type"] ?? null;
     if ($type !== "choice" && $type !== "answer") {
-        die(json_encode(["success" => false, "message" => "Invalid question type"]));
+      die(json_encode(["success" => false, "message" => "Invalid question type"]));
     }
     $subject = $data["subject"] ?? null;
     $question = $data["text"] ?? null;
     if (!$subject) {
-        die(json_encode(["success" => false, "message" => "Subject is required"]));
+      die(json_encode(["success" => false, "message" => "Subject is required"]));
     }
     if (!$question) {
-        die(json_encode(["success" => false, "message" => "Question is required"]));
+      die(json_encode(["success" => false, "message" => "Question is required"]));
     }
 
     // Generate and ensure code uniqueness
@@ -70,12 +73,12 @@ class Question
     $queryControl = "SELECT * FROM Question WHERE code LIKE '$code'";
     $queryControlResult = mysqli_query($this->conn, $queryControl);
     if (!$queryControlResult) {
-        die(json_encode(["success" => false, "message" => "Error checking code uniqueness"]));
+      die(json_encode(["success" => false, "message" => "Error checking code uniqueness"]));
     }
     while (mysqli_num_rows($queryControlResult) > 0) {
-        $code = $this->generateCode();
-        $queryControl = "SELECT * FROM Question WHERE code LIKE '$code'";
-        $queryControlResult = mysqli_query($this->conn, $queryControl);
+      $code = $this->generateCode();
+      $queryControl = "SELECT * FROM Question WHERE code LIKE '$code'";
+      $queryControlResult = mysqli_query($this->conn, $queryControl);
     }
 
     // Insert question data into database
@@ -84,18 +87,43 @@ class Question
     $questionId = $this->conn->insert_id;
 
     if ($type == 'choice') {
-        $answers = $data["answers"] ?? null;
-        if (!$answers) {
-            die(json_encode(["success" => false, "message" => "Answers are required for choice questions"]));
-        }
-        $answerController = new Answer($this->conn, $this->auth);
-        foreach ($answers as $answer) {
-            $answerController->addAnswerToQuestion($questionId, $answer);
-        } 
+      $answers = $data["answers"] ?? null;
+      if (!$answers) {
+        die(json_encode(["success" => false, "message" => "Answers are required for choice questions"]));
+      }
+      $answerController = new Answer($this->conn, $this->auth);
+      foreach ($answers as $answer) {
+        $answerController->addAnswerToQuestion($questionId, $answer);
+      }
     }
 
     // Return question ID and code
-    return json_encode(["success"=> true, "message"=> "Question created successfully", "data"=> ["questionId" => $questionId, "code" => $code]]);
-}
+    return json_encode(["success" => true, "message" => "Question created successfully", "data" => ["questionId" => $questionId, "code" => $code]]);
+  }
 
+  public function getQuestionResponses($data) {
+    if (!$this->auth->isLoggedIn()) {
+      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
+    }
+    $userId = $this->auth->getUserId();
+    $questionCode = $data["code"] ?? null;
+
+    $question = json_decode($this->getQuestionByCode($questionCode), true);
+    if ($question["success"] == false) {
+      die(json_encode(["success" => false, "message" => "Question not found"]));
+    }
+    if ($question["data"]["question"]["user_id"] != $userId) {
+      die(json_encode(["success" => false, "message" => "You are not the owner of this question"]));
+    }
+
+    $questionId = $question["data"]["question"]["id"];
+
+    $query = "SELECT * from Response WHERE question_id = $questionId";
+    $query = mysqli_query($this->conn, $query);
+    $questionResponses = [];
+    while ($row = mysqli_fetch_assoc($query)) {
+      $questionResponses[] = $row;
+    }
+    return json_encode(["success"=> true, "data"=> $questionResponses]);
+  }
 }

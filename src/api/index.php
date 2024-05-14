@@ -59,6 +59,8 @@ if ($method == 'GET') {
   } else if ($endpoint == 'questions') {
     if ($subEndpoint == 'create') {
       echo $questionController->createQuestion($data);
+    } else if ($subEndpoint == "getResponses") {
+      echo $questionController->getQuestionResponses($data);
     } else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }

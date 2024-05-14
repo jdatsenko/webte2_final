@@ -65,39 +65,43 @@ const isModalOpen = ref(false);
         icon="pi pi-globe"
         outlined
         @click="changeLocale()"
-        v-tooltip="'Change language'"
+        v-tooltip="{ value: 'Change language', showDelay: 500, hideDelay: 300 }"
       />
       <Button
         icon="pi pi-book"
         outlined
         @click="toggleModal()"
-        v-tooltip="'Export manual to PDF'"
+        v-tooltip="{
+          value: 'Export manual to PDF',
+          showDelay: 500,
+          hideDelay: 300,
+        }"
       />
       <Button
         v-if="!state.isLogged"
         icon="pi pi-user-plus"
         outlined
         @click="router.push('/register')"
-        v-tooltip="'Register'"
+        v-tooltip="{ value: 'Register', showDelay: 500, hideDelay: 300 }"
       />
       <Button
         v-if="!state.isLogged"
         icon="pi pi-sign-in"
         @click="router.push('/login')"
-        v-tooltip="'Login'"
+        v-tooltip="{ value: 'Login', showDelay: 500, hideDelay: 300 }"
       />
       <Button
         v-if="state.isLogged"
         icon="pi pi-sign-out"
         @click="logout()"
         outlined
-        v-tooltip="'Logout'"
+        v-tooltip="{ value: 'Logout', showDelay: 500, hideDelay: 300 }"
       />
       <Button
         v-if="state.isLogged"
         icon="pi pi-user"
         @click="router.push('/user')"
-        v-tooltip="'Account'"
+        v-tooltip="{ value: 'Account', showDelay: 500, hideDelay: 300 }"
       />
     </div>
   </div>
