@@ -1,12 +1,12 @@
-<script>
+<script setup>
 import { t } from "@/i18n";
 
-const code = defineProps(["code"]);
+const { code } = defineProps(["code"]);
 </script>
 
 <template>
   <div class="container">
-    <h1 class="text">{{ t("Created.title") }} {{ code }}</h1>
+    <h1 class="text">Question: {{ code }}</h1>
   </div>
 </template>
 

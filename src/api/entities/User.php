@@ -130,33 +130,20 @@ class User
     }
   }
 
-  public function generateVerificationUrl($email)
-  {
-
-    $selector = base64_encode(random_bytes(9));
-    $token = bin2hex(random_bytes(32));
-    $query = "INSERT INTO email_verification (email, selector, token) VALUES (:email, :selector, :token)";
-    $stmt = $this->conn->prepare($query);
-    $stmt->execute(['email' => $email, 'selector' => $selector, 'token' => $token]);
-
-    $url = 'https://www.example.com/verify_email?selector=' . urlencode($selector) . '&token=' . urlencode($token);
-
-    return $url;
+  public function getUserQuestions() {
+    if (!$this->auth->isLoggedIn()) {
+      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
+    }
+    $query = "SELECT Question.*, COUNT(Response.question_id) AS response_count 
+          FROM Question 
+          LEFT JOIN Response ON Question.id = Response.question_id 
+          WHERE Question.user_id = " . $this->auth->getUserId() . "
+          GROUP BY Question.id";
+    $result = mysqli_query($this->conn, $query);
+    $questions = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+      $questions[] = $row;
+    }
+    return json_encode(["success" => true, "data" => $questions]);
   }
-
-  // TO DO: sending of the verification email 
-
-  //   public function sendVerificationEmail($email, $selector, $token)
-  //   {
-
-  //       $url = 'https://www.example.com/verify_email?selector=' . urlencode($selector) . '&token=' . urlencode($token);
-  //       $subject = 'Email Verification';
-  //       $message = 'Click on the following link to verify your email address: ' . $url;
-
-  //       if (mail($email, $subject, $message)) {
-  //           return true;
-  //       } else {
-  //           return false; 
-  //       }
-  //   }
 }

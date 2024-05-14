@@ -1,12 +1,13 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
-import { GetUserInfo } from "@/api";
+import { GetUserInfo, GetUserQuestions } from "@/api";
 
 export const useUserStore = () =>
   defineStore("user", () => {
     const state = reactive({
       user: null,
       isLogged: false,
+      questions: [],
     });
 
     const isAdmin = () => state.user?.role === "admin";
@@ -22,5 +23,12 @@ export const useUserStore = () =>
       state.isLogged = false;
     }
 
-    return { state, isAdmin, getUserInfo };
+    async function getUserQuestions() {
+      const res = await GetUserQuestions.get(state.user.id);
+      if (res.data.success) {
+        state.questions = res.data.data;
+      }
+    }
+
+    return { state, isAdmin, getUserInfo, getUserQuestions };
   })();

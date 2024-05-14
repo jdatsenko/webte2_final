@@ -22,6 +22,8 @@ if ($method == 'GET') {
       echo $userController->getUserById($subEndpoint);
     } else if ($subEndpoint == 'getInfo') {
       echo $userController->getUserInfo();
+    } else if ($subEndpoint == 'getQuestions') {
+      echo $userController->getUserQuestions();
     }
     else {
       echo json_encode(array('error' => 'Invalid endpoint'));

@@ -92,7 +92,7 @@ const createQuestion = async () => {
     });
     router.push({
       name: "questionStats",
-      params: { code: response.data.code },
+      params: { code: response.data.data.code },
     });
   } else {
     toast.add({

@@ -97,7 +97,7 @@ export const router = createRouter({
       },
     },
     {
-      path: "/user/question/:id(\\w{5})",
+      path: "/user/question/:code(\\w{5})",
       name: "questionStats",
       component: () => import("./views/User/UserQuestion.vue"),
       beforeEnter: async (_to, _from, next) => {
@@ -109,7 +109,7 @@ export const router = createRouter({
           next({ name: "login" });
         }
       },
-      props: (route) => ({ code: route.params.id }),
+      props: (route) => ({ code: route.params.code }),
     },
     {
       path: "/:pathMatch(.*)*",

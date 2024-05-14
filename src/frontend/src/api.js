@@ -63,6 +63,16 @@ export const MakeUserAdmin = ((url) => ({
   },
 }))("/api/users/makeAdmin");
 
+/**
+ * Get user's questions
+ * @param {number} id
+ */
+export const GetUserQuestions = ((url) => ({
+  get: () => {
+    return axios.get(url);
+  },
+}))("/api/users/getQuestions");
+
 // ====================
 // Questions
 // ====================
