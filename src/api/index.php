@@ -11,6 +11,7 @@ header('Content-Type: application/json');
 
 $userController = new User($connection, $auth);
 $questionController = new Question($connection, $auth);
+$answerController = new Answer($connection, $auth);
 
 $data = json_decode(file_get_contents('php://input'), true);
 
@@ -24,8 +25,7 @@ if ($method == 'GET') {
       echo $userController->getUserInfo();
     } else if ($subEndpoint == 'getQuestions') {
       echo $userController->getUserQuestions();
-    }
-    else {
+    } else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }
   } else if ($endpoint == 'questions') {
@@ -45,10 +45,9 @@ if ($method == 'GET') {
       echo $userController->loginUser($data);
     } else if ($subEndpoint == 'logout') {
       echo $userController->logoutUser();
-    } else if($subEndpoint = "makeAdmin"){
+    } else if ($subEndpoint = "makeAdmin") {
       echo $userController->makeAdminById($data);
-    }
-    else if ($subEndpoint == 'makeAdmin') {
+    } else if ($subEndpoint == 'makeAdmin') {
       echo $userController->makeAdminById($data);
     } else if ($subEndpoint == 'changePassword') {
       // Call the changePassword method
@@ -65,6 +64,12 @@ if ($method == 'GET') {
       echo $questionController->deleteQuestion($data);
     }
     else {
+      echo json_encode(array('error' => 'Invalid endpoint'));
+    }
+  } else if ($endpoint == 'answers') {
+    if ($subEndpoint == 'create') {
+      echo $answerController->answerQuestion($data);
+    } else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }
   } else {

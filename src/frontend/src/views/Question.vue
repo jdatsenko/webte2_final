@@ -1,16 +1,61 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, reactive, toRaw } from "vue";
 import { useQuestionStore } from "../stores/question.store";
 import { t } from "@/i18n";
 import Fieldset from "primevue/fieldset";
+import { Answer } from "@/api";
 
-import RadioButton from "primevue/radiobutton";
+import Checkbox from "primevue/checkbox";
+import Button from "primevue/button";
+import { useToast } from "primevue/usetoast";
+import { router } from "../router";
+
 
 const { state, getQuestion } = useQuestionStore();
-
 const { code } = defineProps(["code"]);
+const selectedAnswers = ref();
+const toast = useToast();
 
-const selectedAnswer = ref(null);
+
+const answerData = reactive({
+  questionID: "",
+  answerID: [],
+  test: "",
+});
+
+const answer = async () => {
+  const rawObjectOrArray = toRaw(state);
+  const allAnswers = rawObjectOrArray.answers;
+  for (let i = 0; i < selectedAnswers.value.length; i++) {
+    for (let j = 0; j < allAnswers.length; j++) {
+      if (selectedAnswers.value[i] === allAnswers[j].answer) {
+        answerData.answerID.push(allAnswers[j].id);
+      }
+    }
+  }
+  answerData.questionID = rawObjectOrArray.question.id;
+
+  if (selectedAnswers.value.length == 0 || typeof selectedAnswers === "undefined") {
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: "You didn't select an answer",
+    });
+    return;
+  }
+
+  const response = await Answer.post(answerData);
+  toast.add({
+    severity: response.data.success ? "success" : "error",
+    summary: response.data.success ? "Success" : "Error",
+    detail: response.data.message,
+  });
+
+  if (response.data.success) {
+    console.log("success");
+    router.push("/");
+  }
+};
 
 onMounted(async () => {
   if (state.question === null || state.question.code !== code) {
@@ -32,21 +77,17 @@ onMounted(async () => {
         <h1>{{ state.question.question }}</h1>
         <div class="card flex">
           <div class="flex flex-column gap-3">
-            <div
-              v-for="(answer, index) in state.answers"
-              :key="index"
-              class="flex align-items-center"
-            >
-              <RadioButton
-                v-model="selectedAnswer"
-                :inputId="'answer' + index"
-                name="answers"
-              />
+            <div v-for="(answer, index) in state.answers" :key="index" class="flex align-items-center">
+              <Checkbox v-model="selectedAnswers" :inputId="'answer' + index" name="answers" :value=answer.answer />
               <label :for="'answer' + index" class="ml-2">{{
                 answer.answer
               }}</label>
+
             </div>
           </div>
+        </div>
+        <div class="flex justify-content-end">
+          <Button label="Answer" @click="answer" />
         </div>
       </Fieldset>
     </div>
