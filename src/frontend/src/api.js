@@ -102,3 +102,10 @@ export const GetQuestionResponses = ((url) => ({
     return axios.post(url, code);
   },
 }))("/api/questions/getResponses/");
+
+
+export const Answer = ((url) => ({
+  post: (data) => {
+    return axios.post(url, data);
+  },
+}))("/api/answers/create");
