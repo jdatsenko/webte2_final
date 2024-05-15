@@ -61,7 +61,10 @@ if ($method == 'GET') {
       echo $questionController->createQuestion($data);
     } else if ($subEndpoint == "getResponses") {
       echo $questionController->getQuestionResponses($data);
-    } else {
+    } else if($subEndpoint == "delete"){
+      echo $questionController->deleteQuestion($data);
+    }
+    else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }
   } else {
