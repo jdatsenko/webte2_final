@@ -24,7 +24,7 @@ export const useUserStore = () =>
     }
 
     async function getUserQuestions() {
-      const res = await GetUserQuestions.get(state.user.id);
+      const res = await GetUserQuestions.get();
       if (res.data.success) {
         state.questions = res.data.data;
       }

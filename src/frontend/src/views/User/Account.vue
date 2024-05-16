@@ -20,42 +20,45 @@ onMounted(async () => {
   await getUserQuestions();
 });
 
-const splitButtonItems = [
-  {
-    label: "Edit",
-    command: () => {
-      toast.add({
-        severity: "success",
-        summary: "Edit",
-        detail: "Edit",
-        life: 3000,
-      });
+function getSplitButtonItems(data) {
+  return [
+    {
+      label: "Edit",
+      command: () => {
+        toast.add({
+          severity: "success",
+          summary: "Edit",
+          detail: "Edit",
+          life: 3000,
+        });
+      },
     },
-  },
-  {
-    label: "Duplicate",
-    command: () => {
-      toast.add({
-        severity: "warn",
-        summary: "Duplicate",
-        detail: "Duplicate",
-        life: 3000,
-      });
+    {
+      label: "Duplicate",
+      command: () => {
+        toast.add({
+          severity: "warn",
+          summary: "Duplicate",
+          detail: "Duplicate",
+          life: 3000,
+        });
+      },
     },
-  },
-  {
-    label: "Delete",
-    command: () => {
-      toast.add({
-        severity: "warn",
-        summary: "Delete",
-        detail: "Delete",
-        life: 3000,
-      });
+    {
+      label: "Delete",
+      command: () => {
+        const code = data.code;
+        toast.add({
+          severity: "warn",
+          summary: `Delete ${code}`,
+          detail: "Delete",
+          life: 3000,
+        });
+      },
+      // { label: 'Upload', to: '/fileupload' } // to navigate to another route
     },
-    // { label: 'Upload', to: '/fileupload' } // to navigate to another route
-  },
-];
+  ];
+}
 
 const showQRCode = (code) => {
   isDialogVisible.value = true;
@@ -118,7 +121,7 @@ const qrCodeURL = ref("");
           </template>
           <template #body="slotProps">
             <SplitButton
-              :model="splitButtonItems"
+              :model="getSplitButtonItems(slotProps.data)"
               label="Show QR Code"
               @click="showQRCode(slotProps.data.code)"
             />
