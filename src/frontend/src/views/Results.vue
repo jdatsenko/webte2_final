@@ -14,7 +14,10 @@ const chartData = ref();
 const chartOptions = ref();
 const showChoiceChart = ref(false);
 const showOpenChart = ref(false);
-
+const texts = ref({
+    texts: [],
+    answers: []
+})
 
 const setChartOptions = () => {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -64,14 +67,13 @@ const setChartData = (labels, data, responses) => {
 onMounted(async () => {
     await getQuestion(url);
     const rawObjectOrArray = toRaw(state);
-    console.log(rawObjectOrArray.question.type);
+
     const questionType = rawObjectOrArray.question.type;
-    console.log(questionType);
-    if(questionType === "choice"){
+    if (questionType === "choice") {
         showChoiceChart.value = true;
         showOpenChart.value = false;
     }
-    else if(questionType === "open"){
+    else if (questionType === "answer") {
         showChoiceChart.value = false;
         showOpenChart.value = true;
 
@@ -79,15 +81,22 @@ onMounted(async () => {
     const response = await GetAllAnswers.get(url);
     const labels = [];
     const data = [];
+
     state.answers.forEach(element => {
         labels.push(element.answer);
     });
     response.data.responses.forEach(item => {
         data.push(item.count);
+        texts.value.answers.push(item.count);
     });
 
     chartData.value = setChartData(labels, data, response.data.responses);
     chartOptions.value = setChartOptions();
+    if (state.question.type === "answer") {
+        response.data.responses.forEach(item => {
+            texts.value.texts.push(item.text);
+        });
+    }
 });
 
 </script>
@@ -103,12 +112,17 @@ onMounted(async () => {
             </div>
             <div v-if="showOpenChart" class="flex justify-content-center">
                 <div class="flex justify-content-center">
-                    <Chart type="pie" :data="chartData" :options="chartOptions" class="w-full md:w-35rem" />
+                    <ul>
+                        <li v-for="(text, index) in texts.texts" :key="'text-' + index">{{ text }}</li>
+                    </ul>
+                    <ul>
+                        <li v-for="(answer, index) in texts.answers" :key="'answer-' + index">{{ answer }}</li>
+                    </ul>
                 </div>
             </div>
             <div v-else class="flex justify-content-center">
                 <div class="flex justify-content-center">
-                    <Chart type="pie" :data="chartData" :options="chartOptions" class="w-full md:w-35rem" />
+                    
                 </div>
             </div>
         </Fieldset>

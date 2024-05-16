@@ -24,44 +24,78 @@ class Answer
     $questionId = $data["questionID"];
     $answerId = $data["answerID"] ?? null;
     $text = $data["text"] ?? null;
-
-    foreach ($answerId as $answer) {
-      $query = "INSERT INTO Response (question_id, user_id, answer_id, text) VALUES ($questionId, $userId, $answer, '$text')";
-      $this->conn->query($query);
+    if (!$questionId) {
+      die(json_encode(["success" => false, "message" => "Question not found"]));
     }
+    if ($answerId == null) {
+      $query = "INSERT INTO Response (question_id, text) VALUES ($questionId, '$text')";
+      $this->conn->query($query);
+    } else {
+      foreach ($answerId as $answer) {
+        $query = "INSERT INTO Response (question_id, user_id, answer_id, text) VALUES ($questionId, $userId, $answer, '$text')";
+        $this->conn->query($query);
+      }
+    }
+
     return json_encode(["success" => true, "message" => "Question answered successfully"]);
   }
-  
+
   public function getAnswers($questionId)
   {
     $query = "SELECT id FROM Question WHERE code = ?";
     $stmt = mysqli_prepare($this->conn, $query);
     mysqli_stmt_bind_param($stmt, "s", $questionId);
     mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result($stmt, $questionIdResult);
+    mysqli_stmt_bind_result($stmt, $questionIdResult); 
     mysqli_stmt_fetch($stmt);
     $id = $questionIdResult;
     mysqli_stmt_close($stmt);
 
-    $query = "SELECT R.answer_id, COUNT(R.answer_id) AS count, A.isRight 
+    
+    $query = "SELECT type FROM Question WHERE id = $id";
+    $result = mysqli_query($this->conn, $query);
+    $type = mysqli_fetch_assoc($result);
+
+    if ($type['type'] === "choice") {
+      $query = "SELECT R.answer_id, COUNT(R.answer_id) AS count, A.isRight 
                 FROM Response R
                 LEFT JOIN Answer A ON R.answer_id = A.id
                 WHERE R.question_id = ?
                 GROUP BY R.answer_id";
-    $stmt = mysqli_prepare($this->conn, $query);
-    mysqli_stmt_bind_param($stmt, "i", $id);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+      $stmt = mysqli_prepare($this->conn, $query);
+      mysqli_stmt_bind_param($stmt, "i", $id);
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
 
-    $response = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-      $response[] = [
-        'answer_id' => $row['answer_id'],
-        'count' => $row['count'],
-        'isRight' => $row['isRight']
-      ];
+      $response = [];
+      while ($row = mysqli_fetch_assoc($result)) {
+        $response[] = [
+          'answer_id' => $row['answer_id'],
+          'count' => $row['count'],
+          'isRight' => $row['isRight']
+        ];
+      }
+      mysqli_stmt_close($stmt);
+      return json_encode(["success" => true, "responses" => $response]);
+    } else if ($type['type'] === "answer") {
+      $query = "SELECT text, COUNT(*) AS count
+          FROM Response
+          WHERE question_id = ?
+          GROUP BY text";
+      $stmt = mysqli_prepare($this->conn, $query);
+      mysqli_stmt_bind_param($stmt, "i", $id);
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
+
+      $response = [];
+      while ($row = mysqli_fetch_assoc($result)) {
+        $response[] = [
+          'text' => $row['text'],
+          'count' => $row['count']
+        ];
+      }
+      mysqli_stmt_close($stmt);
+      return json_encode(["success" => true, "responses" => $response]);
     }
-    mysqli_stmt_close($stmt);
-    return json_encode(["success" => true, "responses" => $response]);
   }
 }
