@@ -66,6 +66,8 @@ if ($method == 'GET') {
       echo $questionController->getQuestionResponses($data);
     } else if ($subEndpoint == "delete") {
       echo $questionController->deleteQuestion($data);
+    } else if($subEndpoint == "duplicate") {
+      echo $questionController->duplicateQuestion($data);
     } else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }

@@ -159,4 +159,37 @@ class Question
     return json_encode(["success" => true, "message" => "Question deleted successfully"]);
 }
 
+  public function duplicateQuestion($data){
+    if (!$this->auth->isLoggedIn()) {
+      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
+    }
+    $userId = $this->auth->getUserId();
+    $questionCode = $data["code"] ?? null;
+    $question = json_decode($this->getQuestionByCode($questionCode), true);
+    if ($question["success"] == false) {
+      die(json_encode(["success" => false, "message" => "Question not found"]));
+    }
+    if ($question["data"]["question"]["user_id"] != $userId) {
+      die(json_encode(["success" => false, "message" => "You are not the owner of this question"]));
+    }
+    var_dump($question);
+    $questionId = $question["data"]["question"]["id"];
+    $questionType = $question["data"]["question"]["type"];
+    $questionSubject = $question["data"]["question"]["subject"];
+    $questionText = $question["data"]["question"]["question"];
+    $questionIsActive = $question["data"]["question"]["isActive"];
+    $questionCode = $this->generateCode();
+    $query = "INSERT INTO Question (type, subject, question, isActive, user_id, code) VALUES ('$questionType', '$questionSubject', '$questionText', '$questionIsActive', '$userId', '$questionCode')";
+    mysqli_query($this->conn, $query);
+    $newQuestionId = $this->conn->insert_id;
+    if ($questionType == 'choice') {
+      $answers = $question["data"]["answers"];
+      $answerController = new Answer($this->conn, $this->auth);
+      foreach ($answers as $answer) {
+        $answerController->addAnswerToQuestion($newQuestionId, $answer);
+      }
+    }
+    return json_encode(["success" => true, "message" => "Question duplicated successfully", "data" => ["questionId" => $newQuestionId, "code" => $questionCode]]);
+  }
+
 }

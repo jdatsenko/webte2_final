@@ -87,7 +87,6 @@ export const GetAllQuestions = ((url) => ({
 
 export const DeleteQuestion = ((url) => ({
   post: (code) => {
-    console.log(code);
     return axios.post(url, code)
   },
 }))("/api/questions/delete/");
@@ -104,6 +103,13 @@ export const CreateQuestion = ((url) => ({
     return axios.post(url, data);
   },
 }))("/api/questions/create");
+
+export const DuplicateQuestion = ((url) => ({
+  post: (code) => {
+    console.log("Duplicating question with code: ", code);
+    return axios.post(url, code);
+  },
+}))("/api/questions/duplicate/");
 
 export const GetQuestionResponses = ((url) => ({
   post: (code) => {

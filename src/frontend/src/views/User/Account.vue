@@ -12,6 +12,7 @@ import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 import { DeleteQuestion } from "@/api";
+import { DuplicateQuestion } from "@/api";
 
 const { state, getUserQuestions } = useUserStore();
 
@@ -37,12 +38,21 @@ function getSplitButtonItems(data) {
     {
       label: "Duplicate",
       command: () => {
+        const code = data.code;
         toast.add({
           severity: "warn",
-          summary: "Duplicate",
+          summary: `Duplicate ${code}`,
           detail: "Duplicate",
           life: 3000,
         });
+        DuplicateQuestion.post({ code })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error("Error duplicating question:", error);
+          });
+          getUserQuestions();
       },
     },
     {
