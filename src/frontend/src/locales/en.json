@@ -28,9 +28,106 @@
   "App": {
     "title": "Home",
     "create": "Create",
-    "modalTitle": "User manual",
-    "modalText": "EN Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-  },
+    "modalTitle": "User Manual for Voting Application",
+    "modalText": {
+      "part1": "Overview",
+      "part2": "This voting application allows users to participate in voting, view results, and for authenticated users, create and manage voting questions. Administrators have additional management privileges.",
+      "part3": "Accessing Voting Questions",
+      "part4": [
+          {
+            "step": "1",
+            "description": "QR Code: Scan the QR code."
+          },
+          {
+            "step": "2",
+            "description": "Entry Code: Enter the code on the home page."
+          },
+          {
+            "step": "3",
+            "description": "Direct URL: Go to https://nodeXX.webte.fei.stuba.sk/abcde (replace abcde with the 5-character code)."
+          }
+        ],
+        "part5": "Unauthenticated Users",
+        "part6": [{
+            "step": "1",
+            "description": "Access and submit votes."
+          },{
+            "step": "2",
+            "description": "View voting results"
+          }],
+        "part7": "Authenticated Users",
+        "part8": [
+        {
+          "step": "1",
+          "description": "Log In: Enter your credentials."
+        },
+        {
+          "step": "2",
+          "description": "Change Password: Update your password."
+        },
+        {
+          "step": "3",
+          "description": "Create Questions: Define multiple voting questions."
+        },
+        {
+          "step": "4",
+          "description": "Generate Codes: Create QR and entry codes."
+        },
+        {
+          "step": "5",
+          "description": "Question Types: Choose multiple-choice or open-ended.."
+        },
+        {
+          "step": "6",
+          "description": "Result Display: List or word cloud format."
+        },
+        {
+          "step": "7",
+          "description": "Manage Questions: Edit, delete, and copy."
+        },
+        {
+          "step": "8",
+          "description": "Filter: By subject or date."
+        },
+        {
+          "step": "9",
+          "description": "View Results: Current and archived."
+        },
+        {
+          "step": "10",
+          "description": "Close Questions: Archive responses and restart voting."
+        },
+        {
+          "step": "11",
+          "description": "Categorize: Define the subject."
+        },
+        {
+          "step": "12",
+          "description": "Export Data: CSV, JSON, XML."
+        }
+      ],
+      "part9": "Administrators",
+      "part10": [
+        {
+          "step": "1",
+          "description": "All authenticated user features."
+        },
+        {
+          "step": "2",
+          "description": "Manage all user questions."
+        },
+        {
+          "step": "3",
+          "description": "Create questions for other users."
+        },
+        {
+          "step": "4",
+          "description": "Full user account management (CRUD, role changes)."
+        }]},
+
+
+
+      
   "Account": {
     "title": "My Account",
     "changePassword": "Change Password",
@@ -40,3 +137,6 @@
     "save": "Save"
   }
 }
+  }
+
+
