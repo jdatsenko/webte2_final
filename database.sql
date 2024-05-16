@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: May 09, 2024 at 11:16 PM
+-- Generation Time: May 16, 2024 at 02:11 PM
 -- Server version: 8.0.32
 -- PHP Version: 8.2.8
 
@@ -34,6 +34,27 @@ CREATE TABLE `Answer` (
   `answer` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `Answer`
+--
+
+INSERT INTO `Answer` (`id`, `question_id`, `isRight`, `answer`) VALUES
+(1, 8, 0, '1'),
+(2, 8, 1, '2'),
+(3, 8, 1, '3'),
+(4, 8, 0, '4'),
+(5, 9, 0, 'qwe'),
+(6, 9, 1, '123'),
+(7, 10, 1, 'Noone'),
+(8, 10, 0, 'Wow me'),
+(9, 10, 0, 'nah'),
+(10, 11, 1, 'йцу'),
+(11, 11, 0, 'йцу'),
+(12, 12, 1, 'йцу'),
+(13, 12, 0, 'йцу'),
+(14, 13, 0, 'zxc'),
+(15, 13, 1, 'zxc');
+
 -- --------------------------------------------------------
 
 --
@@ -63,6 +84,19 @@ CREATE TABLE `Question` (
   `code` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `Question`
+--
+
+INSERT INTO `Question` (`id`, `createdAt`, `user_id`, `subject`, `isActive`, `type`, `question`, `code`) VALUES
+(8, '2024-05-13 22:01:14', 3, 'Test', 1, 'choice', 'What?', 'xJ44m'),
+(9, '2024-05-13 22:03:20', 3, 'Test2', 1, 'choice', 'Test3', '6u2Pb'),
+(10, '2024-05-14 13:09:37', 3, 'Geography', 1, 'choice', 'Who killed MArk?', 'B2EAd'),
+(11, '2024-05-14 13:21:47', 3, 'йцу', 1, 'choice', 'йцу', 'sy5Jj'),
+(12, '2024-05-14 13:23:27', 3, 'йцу', 1, 'choice', 'йцу', 'v8uXj'),
+(13, '2024-05-14 13:23:57', 3, 'asd', 1, 'choice', 'asd', '22wvQ'),
+(14, '2024-05-16 14:08:46', 3, 'open', 1, 'answer', 'open2', 'Zz9h5');
+
 -- --------------------------------------------------------
 
 --
@@ -72,10 +106,17 @@ CREATE TABLE `Question` (
 CREATE TABLE `Response` (
   `id` int NOT NULL,
   `question_id` int NOT NULL,
-  `user_id` int UNSIGNED NOT NULL,
+  `user_id` int UNSIGNED DEFAULT NULL,
   `answer_id` int DEFAULT NULL,
-  `test` varchar(255) DEFAULT NULL
+  `text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `Response`
+--
+
+INSERT INTO `Response` (`id`, `question_id`, `user_id`, `answer_id`, `text`) VALUES
+(1, 8, 3, 1, '');
 
 -- --------------------------------------------------------
 
@@ -104,7 +145,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `email`, `password`, `username`, `status`, `verified`, `resettable`, `roles_mask`, `registered`, `last_login`, `force_logout`) VALUES
 (1, 'test@gmail.com', '$2y$10$.o0nh/Sk/joxeAGXl8v5CuWj4DA3NIrUyq0VPe/GraenXBqOnZOz.', 'test', 0, 1, 1, 1, 1715292628, 1715294232, 2),
 (2, 'test2@gmail.com', '$2y$10$.08aZdDQuX4Az2jnSNRv5.SHn.RY4q3NxFF6a6HhfejR64fM527W6', 'test', 0, 1, 1, 0, 1715294249, 1715294261, 0),
-(3, 'admin@admin.com', '$2y$10$JNWRhLKHI3.4RXk0xvdzfuvnOHTrqshHbIx9es39jujEDPVZPrsuq', 'admin', 0, 1, 1, 1, 1715295439, NULL, 0),
+(3, 'admin@admin.com', '$2y$10$JNWRhLKHI3.4RXk0xvdzfuvnOHTrqshHbIx9es39jujEDPVZPrsuq', 'admin', 0, 1, 1, 1, 1715295439, 1715867775, 7),
 (4, 'user@gmail.com', '$2y$10$U2vktfOwnkB.XEql7jOyEu8Kx8TsnFa.SUysoe5opqAxEGMCA475i', 'user', 0, 1, 1, 0, 1715295696, NULL, 0),
 (5, 'test@test.com', '$2y$10$3pqsMV578Ar0aQBavDKK8exDMtDxKNH4gY0wVpU95VT.ua6kHtIS6', 'test', 0, 1, 1, 0, 1715295768, NULL, 0);
 
@@ -121,6 +162,14 @@ CREATE TABLE `users_remembered` (
   `token` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL,
   `expires` int UNSIGNED NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users_remembered`
+--
+
+INSERT INTO `users_remembered` (`id`, `user`, `selector`, `token`, `expires`) VALUES
+(7, 3, 'IyXLPlPEHsKE5LIY4VvOLTdX', '$2y$10$XJiP2zQw75PiibXMc2gyV.RWkRwkrfaD2c1bQIkRzP.xjaV7.byv6', 1715726530),
+(8, 3, 'IyTSZfuplUchusu8xGJHFhuT', '$2y$10$tMtMpGq0H2.FADLu5MDQu.1PrCZ8FZCsllGe1iK1qltUjRdKkJYZ.', 1715873896);
 
 -- --------------------------------------------------------
 
@@ -140,7 +189,7 @@ CREATE TABLE `users_throttling` (
 --
 
 INSERT INTO `users_throttling` (`bucket`, `tokens`, `replenished_at`, `expires_at`) VALUES
-('RZ5QgDxjDQHIzpHoNfdvC8MqW4blMzHr7oFN22ZvkPw', 58.8918, 1715295767, 1715835767),
+('RZ5QgDxjDQHIzpHoNfdvC8MqW4blMzHr7oFN22ZvkPw', 74, 1715787496, 1716327496),
 ('0HqL-0AQcCnmuqbcJF25m95LjmNz-4pg2BxPhPbtB98', 0.0726867, 1715295768, 1715727768),
 ('dsvFjOr0D8G5ojcLW5BCrGMtUdLEHgmTA_C87q2o2dw', 18.5978, 1715294256, 1715330256),
 ('mgCy-8rDNBXh2evmUOZnyQuyeIEL75fq0ddhcvWv10Y', 499, 1715293718, 1715466518),
@@ -210,7 +259,7 @@ ALTER TABLE `users_throttling`
 -- AUTO_INCREMENT for table `Answer`
 --
 ALTER TABLE `Answer`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `Archive`
@@ -222,13 +271,13 @@ ALTER TABLE `Archive`
 -- AUTO_INCREMENT for table `Question`
 --
 ALTER TABLE `Question`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `Response`
 --
 ALTER TABLE `Response`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -240,7 +289,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users_remembered`
 --
 ALTER TABLE `users_remembered`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
