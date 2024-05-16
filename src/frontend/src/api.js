@@ -120,3 +120,9 @@ export const Answer = ((url) => ({
     return axios.post(url, data);
   },
 }))("/api/answers/create");
+
+export const GetAllAnswers = ((url) => ({
+  get: (code) => {
+    return axios.get(url.replace("{code}", code));
+  },
+}))("/api/answers/{code}");

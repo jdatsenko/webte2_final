@@ -52,8 +52,7 @@ const answer = async () => {
   });
 
   if (response.data.success) {
-    console.log("success");
-    router.push("/");
+    router.push(`/result/${code}`);
   }
 };
 

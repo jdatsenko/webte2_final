@@ -36,6 +36,10 @@ if ($method == 'GET') {
     } else {
       echo json_encode(array('error' => 'Invalid question endpoint'));
     }
+  } else if ($endpoint == 'answers') {
+    if ($subEndpoint) {
+      echo $answerController->getAnswers($subEndpoint);
+    }
   }
 } else if ($method == 'POST') {
   if ($endpoint == 'users') {
@@ -60,10 +64,9 @@ if ($method == 'GET') {
       echo $questionController->createQuestion($data);
     } else if ($subEndpoint == "getResponses") {
       echo $questionController->getQuestionResponses($data);
-    } else if($subEndpoint == "delete"){
+    } else if ($subEndpoint == "delete") {
       echo $questionController->deleteQuestion($data);
-    }
-    else {
+    } else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }
   } else if ($endpoint == 'answers') {
