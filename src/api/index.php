@@ -49,13 +49,18 @@ if ($method == 'GET') {
       echo $userController->loginUser($data);
     } else if ($subEndpoint == 'logout') {
       echo $userController->logoutUser();
-    } else if ($subEndpoint = "makeAdmin") {
+    } else if ($subEndpoint == "makeAdmin") {
       echo $userController->makeAdminById($data);
-    } else if ($subEndpoint == 'makeAdmin') {
-      echo $userController->makeAdminById($data);
+    } else if ($subEndpoint == "revokeAdmin") {
+      echo $userController->revokeAdminById($data);
     } else if ($subEndpoint == 'changePassword') {
-      // Call the changePassword method
       echo $userController->changePassword($data['oldPassword'], $data['newPassword']);
+    } else if ($subEndpoint == 'changeUserPassword') {
+      echo $userController->changeUserPassword($data);
+    } else if ($subEndpoint == 'changeUserUsername') {
+      echo $userController->changeUserUsername($data);
+    } else if ($subEndpoint == 'delete') {
+      echo $userController->deleteUser($data);
     } else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }

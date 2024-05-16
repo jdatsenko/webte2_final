@@ -126,6 +126,20 @@ export const router = createRouter({
       props: (route) => ({ code: route.params.code }),
     },
     {
+      path: "/admin",
+      name: "admin",
+      component: () => import("./views/Admin/Admin.vue"),
+      beforeEnter: async (_to, _from, next) => {
+        const { state, getUserInfo } = useUserStore();
+        await getUserInfo();
+        if (state.isLogged && state.user.isAdmin) {
+          next();
+        } else {
+          next({ name: "home" });
+        }
+      },
+    },
+    {
       path: "/:pathMatch(.*)*",
       name: "not-found",
       component: () => import("./views/NotFound.vue"),

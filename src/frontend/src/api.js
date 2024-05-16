@@ -14,6 +14,30 @@ export const GetUserInfo = ((url) => ({
   },
 }))("/api/users/getInfo");
 
+export const GetAllUsers = ((url) => ({
+  get: () => {
+    return axios.get(url);
+  },
+}))("/api/users/all");
+
+export const ChangeUserPassword = ((url) => ({
+  post: (data) => {
+    return axios.post(url, data);
+  },
+}))("/api/users/changeUserPassword");
+
+export const ChangeUserUsername = ((url) => ({
+  post: (data) => {
+    return axios.post(url, data);
+  },
+}))("/api/users/changeUserUsername");
+
+export const DeleteUser = ((url) => ({
+  post: (data) => {
+    return axios.post(url, data);
+  },
+}))("/api/users/delete");
+
 /**
  * Login
  */
@@ -58,10 +82,16 @@ export const ChangePassword = ((url) => ({
  * @param {number} id
  */
 export const MakeUserAdmin = ((url) => ({
-  post: (id) => {
-    return axios.post(url, id);
+  post: (data) => {
+    return axios.post(url, data);
   },
 }))("/api/users/makeAdmin");
+
+export const RevokeUserAdmin = ((url) => ({
+  post: (data) => {
+    return axios.post(url, data);
+  },
+}))("/api/users/revokeAdmin");
 
 /**
  * Get user's questions
@@ -87,14 +117,12 @@ export const GetAllQuestions = ((url) => ({
 
 export const DeleteQuestion = ((url) => ({
   post: (code) => {
-    return axios.post(url, code)
-      .catch(error => {
-        console.error('Error deleting question:', error);
-        throw error;
-      });
+    return axios.post(url, code).catch((error) => {
+      console.error("Error deleting question:", error);
+      throw error;
+    });
   },
 }))("/api/questions/delete");
-
 
 export const GetQuestionByCode = ((url) => ({
   get: (code) => {
@@ -113,7 +141,6 @@ export const GetQuestionResponses = ((url) => ({
     return axios.post(url, code);
   },
 }))("/api/questions/getResponses/");
-
 
 export const Answer = ((url) => ({
   post: (data) => {

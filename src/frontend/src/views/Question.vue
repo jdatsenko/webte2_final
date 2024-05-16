@@ -10,12 +10,10 @@ import Button from "primevue/button";
 import { useToast } from "primevue/usetoast";
 import { router } from "../router";
 
-
 const { state, getQuestion } = useQuestionStore();
 const { code } = defineProps(["code"]);
 const selectedAnswers = ref();
 const toast = useToast();
-
 
 const answerData = reactive({
   questionID: "",
@@ -35,7 +33,10 @@ const answer = async () => {
   }
   answerData.questionID = rawObjectOrArray.question.id;
 
-  if (selectedAnswers.value.length == 0 || typeof selectedAnswers === "undefined") {
+  if (
+    selectedAnswers.value.length == 0 ||
+    typeof selectedAnswers === "undefined"
+  ) {
     toast.add({
       severity: "error",
       summary: "Error",
@@ -75,13 +76,21 @@ onMounted(async () => {
       <Fieldset :legend="state.question.subject" style="width: 50%">
         <h1>{{ state.question.question }}</h1>
         <div class="card flex">
-          <div class="flex flex-column gap-3">
-            <div v-for="(answer, index) in state.answers" :key="index" class="flex align-items-center">
-              <Checkbox v-model="selectedAnswers" :inputId="'answer' + index" name="answers" :value=answer.answer />
+          <div v-if="question.type == 'choice'" class="flex flex-column gap-3">
+            <div
+              v-for="(answer, index) in state.answers"
+              :key="index"
+              class="flex align-items-center"
+            >
+              <Checkbox
+                v-model="selectedAnswers"
+                :inputId="'answer' + index"
+                name="answers"
+                :value="answer.answer"
+              />
               <label :for="'answer' + index" class="ml-2">{{
                 answer.answer
               }}</label>
-
             </div>
           </div>
         </div>
