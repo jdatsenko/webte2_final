@@ -117,12 +117,9 @@ export const GetAllQuestions = ((url) => ({
 
 export const DeleteQuestion = ((url) => ({
   post: (code) => {
-    return axios.post(url, code).catch((error) => {
-      console.error("Error deleting question:", error);
-      throw error;
-    });
+    return axios.post(url, code)
   },
-}))("/api/questions/delete");
+}))("/api/questions/delete/");
 
 export const GetQuestionByCode = ((url) => ({
   get: (code) => {
@@ -135,6 +132,13 @@ export const CreateQuestion = ((url) => ({
     return axios.post(url, data);
   },
 }))("/api/questions/create");
+
+export const DuplicateQuestion = ((url) => ({
+  post: (code) => {
+    console.log("Duplicating question with code: ", code);
+    return axios.post(url, code);
+  },
+}))("/api/questions/duplicate/");
 
 export const GetQuestionResponses = ((url) => ({
   post: (code) => {
