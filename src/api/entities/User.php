@@ -15,8 +15,8 @@ class User
     if (!$this->auth->isLoggedIn()) {
       die(json_encode(['success' => false, 'message' => 'You are not logged in']));
     }
-    $data = ['username' => $this->auth->getUsername(), "email" => $this->auth->getEmail(), "roles" => $this->auth->getRoles()];
-    return json_encode(['success' => true, 'data'=> $data]);
+    $data = ['username' => $this->auth->getUsername(), "email" => $this->auth->getEmail(), "isAdmin" => $this->auth->hasRole(\Delight\Auth\Role::ADMIN)];
+    return json_encode(['success' => true, 'data' => $data]);
   }
 
   public function getAllUsers()
@@ -24,13 +24,19 @@ class User
     if (!$this->auth->isLoggedIn()) {
       die(json_encode(['success' => false, 'message' => 'You are not logged in']));
     }
-    if (!$this->auth->isAdmin()) {
+    if (!$this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
       die(json_encode(['success' => false, 'message' => 'You are not an admin']));
     }
-    $query = "SELECT * FROM User";
+    $query = "SELECT id, email, username, roles_mask, registered, last_login FROM users";
     $result = mysqli_query($this->conn, $query);
-    $users = mysqli_fetch_assoc($result);
-    return json_encode($users);
+    if ($result === false) {
+      die(json_encode(['success' => false, 'message' => 'Error fetching users']));
+    }
+    $users = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+      $users[] = $row;
+    }
+    return json_encode(["success" => true, "data" => $users]);
   }
 
   public function registerUser($data)
@@ -95,17 +101,36 @@ class User
     if (!$this->auth->isLoggedIn()) {
       die(json_encode(['success' => false, 'message' => 'You are not logged in']));
     }
-    $userId = $data["userId"] ?? null;
-    if (empty($userId)) {
-      die(json_encode(["success" => false, "error" => "User ID is required"]));
+    if (!$this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
+      die(json_encode(['success' => false, 'message' => 'You are not an admin']));
+    }
+    $userId = $data["id"] ?? null;
+    if ($userId === null) {
+      die(json_encode(["success" => false, "message" => "User ID is required"]));
     }
     try {
-      if ($this->auth->isLoggedIn() && $this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
-        $this->auth->admin()->addRoleForUserById($userId, \Delight\Auth\Role::ADMIN);
-        echo (json_encode(["success" => true, "message" => "User is now an admin"]));
-      } else {
-        die(json_encode(["success" => false, "error" => "You are not an admin"]));
-      }
+      $this->auth->admin()->addRoleForUserById($userId, \Delight\Auth\Role::ADMIN);
+      echo (json_encode(["success" => true, "message" => "User is now an admin"]));
+    } catch (\Delight\Auth\UnknownIdException $e) {
+      die('Unknown user ID');
+    }
+  }
+
+    public function revokeAdminById($data)
+  {
+    if (!$this->auth->isLoggedIn()) {
+      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
+    }
+    if (!$this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
+      die(json_encode(['success' => false, 'message' => 'You are not an admin']));
+    }
+    $userId = $data["id"] ?? null;
+    if ($userId === null) {
+      die(json_encode(["success" => false, "message" => "User ID is required"]));
+    }
+    try {
+      $this->auth->admin()->removeRoleForUserById($userId, \Delight\Auth\Role::ADMIN);
+      echo (json_encode(["success" => true, "message" => "User is now an admin"]));
     } catch (\Delight\Auth\UnknownIdException $e) {
       die('Unknown user ID');
     }
@@ -130,7 +155,8 @@ class User
     }
   }
 
-  public function getUserQuestions() {
+  public function getUserQuestions()
+  {
     if (!$this->auth->isLoggedIn()) {
       die(json_encode(['success' => false, 'message' => 'You are not logged in']));
     }
@@ -145,5 +171,70 @@ class User
       $questions[] = $row;
     }
     return json_encode(["success" => true, "data" => $questions]);
+  }
+
+  public function changeUserPassword($data)
+  {
+    if (!$this->auth->isLoggedIn()) {
+      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
+    }
+    if (!$this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
+      die(json_encode(['success' => false, 'message' => 'You are not an admin']));
+    }
+    $id = $data['id'] ?? null;
+    $password = $data['newPassword'] ?? null;
+    if ($id === null || $password === null) {
+      die(json_encode(['success' => false, 'message' => 'ID and password are required']));
+    }
+    try {
+      $this->auth->admin()->changePasswordForUserById($id, $password);
+      echo json_encode(['success' => true, 'message' => 'Password changed']);
+    } catch (\Delight\Auth\UnknownIdException $e) {
+      die(json_encode(['success' => false, 'message' => 'Unknown user ID']));
+    } catch (\Delight\Auth\InvalidPasswordException $e) {
+      die(json_encode(['success' => false, 'message' => 'Invalid password']));
+    }
+  }
+
+  public function changeUserUsername($data)
+  {
+    if (!$this->auth->isLoggedIn()) {
+      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
+    }
+    if (!$this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
+      die(json_encode(['success' => false, 'message' => 'You are not an admin']));
+    }
+    $id = $data['id'] ?? null;
+    $username = $data['newUsername'] ?? null;
+    if ($id === null || $username === null) {
+      die(json_encode(['success' => false, 'message' => 'ID and username are required']));
+    }
+    $query = "UPDATE users SET username = '$username' WHERE id = $id";
+    $result = mysqli_query($this->conn, $query);
+
+    if ($result === false) {
+      die(json_encode(["success" => false, "message" => "Error updating username"]));
+    }
+    return json_encode(["success" => true, "message" => "Username updated"]);
+  }
+
+  public function deleteUser($data)
+  {
+    if (!$this->auth->isLoggedIn()) {
+      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
+    }
+    if (!$this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
+      die(json_encode(['success' => false, 'message' => 'You are not an admin']));
+    }
+    $id = $data['id'] ?? null;
+    if ($id === null) {
+      die(json_encode(['success' => false, 'message' => 'ID is required']));
+    }
+    try {
+      $this->auth->admin()->deleteUserById($id);
+      echo json_encode(['success' => true, 'message' => 'User deleted']);
+    } catch (\Delight\Auth\UnknownIdException $e) {
+      die('Unknown ID');
+    }
   }
 }

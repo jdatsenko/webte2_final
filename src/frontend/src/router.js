@@ -28,6 +28,20 @@ export const router = createRouter({
       },
     },
     {
+      path: "/result/:questionCode",
+      name: "result",
+      component: () => import("./views/Results.vue"),
+      beforeEnter: async (_to, _from, next) => {
+        const { state, getUserInfo } = useUserStore();
+        await getUserInfo();
+        if (state.isLogged) {
+          next();
+        } else {
+          next();
+        }
+      },
+    },
+    {
       path: "/create",
       name: "create",
       component: () => import("./views/Create.vue"),
@@ -110,6 +124,20 @@ export const router = createRouter({
         }
       },
       props: (route) => ({ code: route.params.code }),
+    },
+    {
+      path: "/admin",
+      name: "admin",
+      component: () => import("./views/Admin/Admin.vue"),
+      beforeEnter: async (_to, _from, next) => {
+        const { state, getUserInfo } = useUserStore();
+        await getUserInfo();
+        if (state.isLogged && state.user.isAdmin) {
+          next();
+        } else {
+          next({ name: "home" });
+        }
+      },
     },
     {
       path: "/:pathMatch(.*)*",

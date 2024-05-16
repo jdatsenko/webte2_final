@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { computed, inject } from "vue";
 import { t } from "@/i18n";
 
 import { Register } from "@/api";
@@ -11,8 +11,12 @@ import Password from "primevue/password";
 import { useToast } from "primevue/usetoast";
 import { router } from "../router";
 import { reactive } from "vue";
+import { useAdminStore } from "./Admin/admin.store";
 
 const toast = useToast();
+const dialogRef = inject("dialogRef");
+const isDialog = computed(() => dialogRef !== undefined);
+const { refetchUsers } = useAdminStore();
 
 const formData = reactive({
   username: "",
@@ -77,14 +81,28 @@ const register = async () => {
   });
 
   if (response.data.success) {
-    router.push("/login");
+    if (isDialog) {
+      const res = await refetchUsers();
+      if (!res.data.success) {
+        toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: res.data.message,
+        });
+      }
+      dialogRef.value.close();
+    } else {
+      router.push("/login");
+    }
   }
 };
 </script>
 
 <template>
   <div class="flex justify-content-center flex-wrap">
-    <h1 class="p-text-bold p-text-center">{{ t("Register.title") }}</h1>
+    <h1 class="p-text-bold p-text-center">
+      {{ isDialog ? "New user" : t("Register.title") }}
+    </h1>
   </div>
   <div class="flex mb-3 justify-content-center">
     <div class="flex flex-column gap-2">
@@ -165,7 +183,7 @@ const register = async () => {
     <Button label="Submit" @click="register" />
   </div>
 
-  <div class="flex mt-4 justify-content-center">
+  <div class="flex mt-4 justify-content-center" v-if="!isDialog">
     <div class="flex align-items-center">
       <span>Already have an account?</span>
     </div>

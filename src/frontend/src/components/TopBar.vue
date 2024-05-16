@@ -10,6 +10,7 @@ import { exportToPDF } from "../manual";
 import { Logout } from "@/api.js";
 
 import { useUserStore } from "../stores/user.store";
+import { computed } from "vue";
 const toast = useToast();
 const { state } = useUserStore();
 
@@ -103,6 +104,12 @@ const isModalOpen = ref(false);
         icon="pi pi-user"
         @click="router.push('/user')"
         v-tooltip="{ value: 'Account', showDelay: 500, hideDelay: 300 }"
+      />
+      <Button
+        v-if="state.user?.isAdmin"
+        icon="pi pi-crown"
+        @click="router.push('/admin')"
+        v-tooltip="{ value: 'Admin', showDelay: 500, hideDelay: 300 }"
       />
     </div>
   </div>

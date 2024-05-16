@@ -43,19 +43,13 @@ const isSomeFieldEmpty = computed(() => {
   return (
     question.text.trim() === "" ||
     question.subject.trim() === "" ||
-    question.answers.some((answer) => answer.answer.trim() === "")
+    (question.type == "choice"
+      ? question.answers.some((answer) => answer.answer.trim() === "")
+      : false)
   );
 });
 
 const createQuestion = async () => {
-  if (question.type === "answer") {
-    toast.add({
-      severity: "error",
-      summary: "Invalid Input",
-      detail: "Open answer questions are not supported yet",
-    });
-  }
-
   if (isSomeFieldEmpty.value) {
     toast.add({
       severity: "error",
@@ -65,23 +59,27 @@ const createQuestion = async () => {
     return;
   }
 
-  if (question.answers.length < 2) {
-    toast.add({
-      severity: "error",
-      summary: "Invalid Input",
-      detail: "You need to add at least two answers",
-    });
-    return;
+  if (question.type == "choice") {
+    if (question.answers.length < 2) {
+      toast.add({
+        severity: "error",
+        summary: "Invalid Input",
+        detail: "You need to add at least two answers",
+      });
+      return;
+    }
+
+    if (!isSelectedAtLeastOneRightAnswer.value) {
+      toast.add({
+        severity: "error",
+        summary: "Invalid Input",
+        detail: "You need to select at least one right answer",
+      });
+      return;
+    }
   }
 
-  if (!isSelectedAtLeastOneRightAnswer.value) {
-    toast.add({
-      severity: "error",
-      summary: "Invalid Input",
-      detail: "You need to select at least one right answer",
-    });
-    return;
-  }
+  if (question.type == "answer") delete question.answers;
 
   const response = await CreateQuestion.post(question);
   if (response.data.success) {

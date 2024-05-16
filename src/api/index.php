@@ -36,6 +36,10 @@ if ($method == 'GET') {
     } else {
       echo json_encode(array('error' => 'Invalid question endpoint'));
     }
+  } else if ($endpoint == 'answers') {
+    if ($subEndpoint) {
+      echo $answerController->getAnswers($subEndpoint);
+    }
   }
 } else if ($method == 'POST') {
   if ($endpoint == 'users') {
@@ -45,13 +49,18 @@ if ($method == 'GET') {
       echo $userController->loginUser($data);
     } else if ($subEndpoint == 'logout') {
       echo $userController->logoutUser();
-    } else if ($subEndpoint = "makeAdmin") {
+    } else if ($subEndpoint == "makeAdmin") {
       echo $userController->makeAdminById($data);
-    } else if ($subEndpoint == 'makeAdmin') {
-      echo $userController->makeAdminById($data);
+    } else if ($subEndpoint == "revokeAdmin") {
+      echo $userController->revokeAdminById($data);
     } else if ($subEndpoint == 'changePassword') {
-      // Call the changePassword method
       echo $userController->changePassword($data['oldPassword'], $data['newPassword']);
+    } else if ($subEndpoint == 'changeUserPassword') {
+      echo $userController->changeUserPassword($data);
+    } else if ($subEndpoint == 'changeUserUsername') {
+      echo $userController->changeUserUsername($data);
+    } else if ($subEndpoint == 'delete') {
+      echo $userController->deleteUser($data);
     } else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }
@@ -60,10 +69,11 @@ if ($method == 'GET') {
       echo $questionController->createQuestion($data);
     } else if ($subEndpoint == "getResponses") {
       echo $questionController->getQuestionResponses($data);
-    } else if($subEndpoint == "delete"){
+    } else if ($subEndpoint == "delete") {
       echo $questionController->deleteQuestion($data);
-    }
-    else {
+    } else if($subEndpoint == "duplicate") {
+      echo $questionController->duplicateQuestion($data);
+    } else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }
   } else if ($endpoint == 'answers') {

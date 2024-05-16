@@ -11,6 +11,8 @@ import SplitButton from "primevue/splitbutton";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
+import { DeleteQuestion } from "@/api";
+import { DuplicateQuestion } from "@/api";
 
 const { state, getUserQuestions } = useUserStore();
 
@@ -20,42 +22,62 @@ onMounted(async () => {
   await getUserQuestions();
 });
 
-const splitButtonItems = [
-  {
-    label: "Edit",
-    command: () => {
-      toast.add({
-        severity: "success",
-        summary: "Edit",
-        detail: "Edit",
-        life: 3000,
-      });
+function getSplitButtonItems(data) {
+  return [
+    {
+      label: "Edit",
+      command: () => {
+        toast.add({
+          severity: "success",
+          summary: "Edit",
+          detail: "Edit",
+          life: 3000,
+        });
+      },
     },
-  },
-  {
-    label: "Duplicate",
-    command: () => {
-      toast.add({
-        severity: "warn",
-        summary: "Duplicate",
-        detail: "Duplicate",
-        life: 3000,
-      });
+    {
+      label: "Duplicate",
+      command: () => {
+        const code = data.code;
+        toast.add({
+          severity: "warn",
+          summary: `Duplicate ${code}`,
+          detail: "Duplicate",
+          life: 3000,
+        });
+        DuplicateQuestion.post({ code })
+          .then((response) => {
+            getUserQuestions();
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error("Error duplicating question:", error);
+          });
+      },
     },
-  },
-  {
-    label: "Delete",
-    command: () => {
-      toast.add({
-        severity: "warn",
-        summary: "Delete",
-        detail: "Delete",
-        life: 3000,
-      });
+    {
+      label: "Delete",
+      command: () => {
+        const code = data.code;
+        toast.add({
+          severity: "warn",
+          summary: `Delete ${code}`,
+          detail: "Delete",
+          life: 3000,
+        });
+
+        DeleteQuestion.post({ code })
+          .then((response) => {
+            getUserQuestions();
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error("Error deleting question:", error);
+          });
+      },
     },
-    // { label: 'Upload', to: '/fileupload' } // to navigate to another route
-  },
-];
+  ];
+}
 
 const showQRCode = (code) => {
   isDialogVisible.value = true;
@@ -118,7 +140,7 @@ const qrCodeURL = ref("");
           </template>
           <template #body="slotProps">
             <SplitButton
-              :model="splitButtonItems"
+              :model="getSplitButtonItems(slotProps.data)"
               label="Show QR Code"
               @click="showQRCode(slotProps.data.code)"
             />

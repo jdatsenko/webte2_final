@@ -69,7 +69,6 @@ const login = async () => {
       <Password
         v-model="formData.password"
         :feedback="false"
-        autocomplete="off"
         toggleMask
         inputClass="w-20rem"
       />

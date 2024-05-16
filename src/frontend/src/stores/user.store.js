@@ -10,8 +10,6 @@ export const useUserStore = () =>
       questions: [],
     });
 
-    const isAdmin = () => state.user?.role === "admin";
-
     async function getUserInfo() {
       const res = await GetUserInfo.get();
       if (res.data.success) {
@@ -24,11 +22,11 @@ export const useUserStore = () =>
     }
 
     async function getUserQuestions() {
-      const res = await GetUserQuestions.get(state.user.id);
+      const res = await GetUserQuestions.get();
       if (res.data.success) {
         state.questions = res.data.data;
       }
     }
 
-    return { state, isAdmin, getUserInfo, getUserQuestions };
+    return { state, getUserInfo, getUserQuestions };
   })();
