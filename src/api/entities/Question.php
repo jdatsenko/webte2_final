@@ -128,34 +128,35 @@ class Question
   }
 
   public function deleteQuestion($data) {
-    
     if (!$this->auth->isLoggedIn()) {
-      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
+        die(json_encode(['success' => false, 'message' => 'You are not logged in']));
     }
+    
     $userId = $this->auth->getUserId();
     $questionCode = $data["code"] ?? null;
     $questionType = $data["type"] ?? null;
+    var_dump($questionType);
     $question = json_decode($this->getQuestionByCode($questionCode), true);
     if ($question["success"] == false) {
-      die(json_encode(["success" => false, "message" => "Question not found"]));
+        die(json_encode(["success" => false, "message" => "Question not found"]));
     }
+    
     if ($question["data"]["question"]["user_id"] != $userId) {
-      die(json_encode(["success" => false, "message" => "You are not the owner of this question"]));
+        die(json_encode(["success" => false, "message" => "You are not the owner of this question"]));
     }
 
     $questionId = $question["data"]["question"]["id"];
 
-    $queryQuestion = "DELETE FROM Question WHERE id = $questionId";
     $queryResponse = "DELETE FROM Response WHERE question_id = $questionId";
-    if ($questionType == "choice") {
-      $queryAnswer = "DELETE FROM Answer WHERE question_id = $questionId";
-    }
-
-    mysqli_query($this->conn, $queryQuestion);
     mysqli_query($this->conn, $queryResponse);
-    if ($questionType == "choice") {
-      mysqli_query($this->conn, $queryAnswer);
-    }
+
+    $queryAnswer = "DELETE FROM Answer WHERE question_id = $questionId";
+    mysqli_query($this->conn, $queryAnswer);
+
+    $queryQuestion = "DELETE FROM Question WHERE id = $questionId";
+    mysqli_query($this->conn, $queryQuestion);
+
     return json_encode(["success" => true, "message" => "Question deleted successfully"]);
-  }
+}
+
 }

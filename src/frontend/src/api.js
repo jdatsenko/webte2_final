@@ -87,13 +87,10 @@ export const GetAllQuestions = ((url) => ({
 
 export const DeleteQuestion = ((url) => ({
   post: (code) => {
+    console.log(code);
     return axios.post(url, code)
-      .catch(error => {
-        console.error('Error deleting question:', error);
-        throw error;
-      });
   },
-}))("/api/questions/delete");
+}))("/api/questions/delete/");
 
 
 export const GetQuestionByCode = ((url) => ({

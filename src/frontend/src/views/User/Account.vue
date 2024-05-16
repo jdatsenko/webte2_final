@@ -11,6 +11,7 @@ import SplitButton from "primevue/splitbutton";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
+import { DeleteQuestion } from "@/api";
 
 const { state, getUserQuestions } = useUserStore();
 
@@ -54,8 +55,16 @@ function getSplitButtonItems(data) {
           detail: "Delete",
           life: 3000,
         });
+
+        DeleteQuestion.post({ code })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.error("Error deleting question:", error);
+          });
+          getUserQuestions();
       },
-      // { label: 'Upload', to: '/fileupload' } // to navigate to another route
     },
   ];
 }
