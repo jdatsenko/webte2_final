@@ -47,12 +47,12 @@ function getSplitButtonItems(data) {
         });
         DuplicateQuestion.post({ code })
           .then((response) => {
+            getUserQuestions();
             console.log(response);
           })
           .catch((error) => {
             console.error("Error duplicating question:", error);
           });
-          getUserQuestions();
       },
     },
     {
@@ -68,12 +68,12 @@ function getSplitButtonItems(data) {
 
         DeleteQuestion.post({ code })
           .then((response) => {
+            getUserQuestions();
             console.log(response);
           })
           .catch((error) => {
             console.error("Error deleting question:", error);
           });
-          getUserQuestions();
       },
     },
   ];
