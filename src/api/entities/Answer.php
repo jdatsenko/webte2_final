@@ -22,16 +22,11 @@ class Answer
   {
     $userId = $this->auth->getUserId();
     $questionId = $data["questionID"];
-    $answerId = $data["answerID"];
-    $test = $data["test"];
+    $answerId = $data["answerID"] ?? null;
+    $text = $data["text"] ?? null;
 
-    // user not logged in
-    if ($userId == null) {
-      $userId = 1;
-    }
-    //
     foreach ($answerId as $answer) {
-      $query = "INSERT INTO Response (question_id, user_id, answer_id, test) VALUES ($questionId, $userId, $answer, '$test')";
+      $query = "INSERT INTO Response (question_id, user_id, answer_id, text) VALUES ($questionId, $userId, $answer, '$text')";
       $this->conn->query($query);
     }
     return json_encode(["success" => true, "message" => "Question answered successfully"]);
