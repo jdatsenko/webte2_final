@@ -73,6 +73,8 @@ if ($method == 'GET') {
       echo $questionController->deleteQuestion($data);
     } else if($subEndpoint == "duplicate") {
       echo $questionController->duplicateQuestion($data);
+    } else if($subEndpoint == "edit"){
+      echo $questionController->editQuestion($data);
     } else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }

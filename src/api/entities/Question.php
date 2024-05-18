@@ -192,4 +192,46 @@ class Question
     return json_encode(["success" => true, "message" => "Question duplicated successfully", "data" => ["questionId" => $newQuestionId, "code" => $questionCode]]);
   }
 
+  public function editQuestion($data) {
+    if (!$this->auth->isLoggedIn()) {
+      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
+    }
+    $userId = $this->auth->getUserId();
+    $questionCode = $data["code"] ?? null;
+    $question = json_decode($this->getQuestionByCode($questionCode), true);
+    if ($question["success"] == false) {
+      die(json_encode(["success" => false, "message" => "Question not found"]));
+    }
+    if ($question["data"]["question"]["user_id"] != $userId) {
+      die(json_encode(["success" => false, "message" => "You are not the owner of this question"]));
+    }
+    $questionId = $question["data"]["question"]["id"];
+    $type = $data["type"] ?? null;
+    if ($type !== "choice" && $type !== "answer") {
+      die(json_encode(["success" => false, "message" => "Invalid question type"]));
+    }
+    $subject = $data["subject"] ?? null;
+    $questionText = $data["text"] ?? null;
+    if (!$subject) {
+      die(json_encode(["success" => false, "message" => "Subject is required"]));
+    }
+    if (!$questionText) {
+      die(json_encode(["success" => false, "message" => "Question is required"]));
+    }
+    $query = "UPDATE Question SET type = '$type', subject = '$subject', question = '$questionText' WHERE id = $questionId";
+    mysqli_query($this->conn, $query);
+    if ($type == 'choice') {
+      $answers = $data["answers"] ?? null;
+      if (!$answers) {
+        die(json_encode(["success" => false, "message" => "Answers are required for choice questions"]));
+      }
+      $answerController = new Answer($this->conn, $this->auth);
+      $answerController->deleteAnswer($questionId);
+      foreach ($answers as $answer) {
+        $answerController->addAnswerToQuestion($questionId, $answer);
+      }
+    }
+    return json_encode(["success" => true, "message" => "Question edited successfully"]);
+  }
+
 }
