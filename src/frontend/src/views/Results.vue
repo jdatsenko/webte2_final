@@ -17,6 +17,7 @@ const chartOptions = ref();
 const showChoiceChart = ref(false);
 const showOpenChart = ref(false);
 const container = ref(null);
+const responses = ref([]);
 
 
 const answers = ref({
@@ -72,7 +73,7 @@ onMounted(async () => {
     await getQuestion(url);
     const rawObjectOrArray = toRaw(state);
 
-    const questionType = rawObjectOrArray.question.type;
+    const questionType = rawObjectOrArray.question?.type;
     if (questionType === "choice") {
         showChoiceChart.value = true;
         showOpenChart.value = false;
@@ -83,6 +84,7 @@ onMounted(async () => {
 
     }
     const response = await GetAllAnswers.get(url);
+    responses.value = response.data.responses;
     const labels = [];
     const data = [];
 
@@ -150,12 +152,15 @@ function getRandomTextAlignment(index) {
             subtitle="Lorem ipsum dolor sit amet consectetur adipisicing elit"></v-list-item>
     </v-list>
     <div class="flex justify-content-center">
-        <Fieldset :legend="state.question.subject" style="width: 50%">
-            <h1>{{ state.question.question }}</h1>
-            <div v-if="showChoiceChart" class="flex justify-content-center">
+        <Fieldset :legend="state.question?.subject" style="width: 50%">
+            <h1>{{ state.question?.question }}</h1>
+            <div v-if="showChoiceChart && responses.length > 0" class="flex justify-content-center">
                 <div class="flex justify-content-center">
                     <Chart type="pie" :data="chartData" :options="chartOptions" class="w-full md:w-35rem" />
                 </div>
+            </div>
+            <div v-if="showChoiceChart && responses.length == 0" class="flex justify-content-center">
+                <p>No responses yet</p>
             </div>
             <div v-if="showOpenChart" class="flex justify-content-center">
                 <Fieldset legend="Answers" style="width: 60%;">

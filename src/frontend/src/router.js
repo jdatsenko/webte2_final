@@ -14,6 +14,15 @@ export const router = createRouter({
       },
     },
     {
+      path: "/manual",
+      name: "manual",
+      component: () => import("./views/Manual.vue"),
+      beforeEnter: async () => {
+        const { getUserInfo } = useUserStore();
+        await getUserInfo();
+      },
+    },
+    {
       path: "/login",
       name: "login",
       component: () => import("./views/Login.vue"),
@@ -32,13 +41,9 @@ export const router = createRouter({
       name: "result",
       component: () => import("./views/Results.vue"),
       beforeEnter: async (_to, _from, next) => {
-        const { state, getUserInfo } = useUserStore();
+        const { getUserInfo } = useUserStore();
         await getUserInfo();
-        if (state.isLogged) {
-          next();
-        } else {
-          next();
-        }
+        next();
       },
     },
     {
@@ -109,21 +114,6 @@ export const router = createRouter({
           next({ name: "login" });
         }
       },
-    },
-    {
-      path: "/user/question/:code(\\w{5})",
-      name: "questionStats",
-      component: () => import("./views/User/UserQuestion.vue"),
-      beforeEnter: async (_to, _from, next) => {
-        const { state, getUserInfo } = useUserStore();
-        await getUserInfo();
-        if (state.isLogged) {
-          next();
-        } else {
-          next({ name: "login" });
-        }
-      },
-      props: (route) => ({ code: route.params.code }),
     },
     {
       path: "/admin",
