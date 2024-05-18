@@ -37,6 +37,7 @@ const register = async () => {
       severity: "error",
       summary: "Error",
       detail: "Username must be at least 3 characters",
+      life: 3000,
     });
     return;
   }
@@ -48,6 +49,7 @@ const register = async () => {
       severity: "error",
       summary: "Error",
       detail: "Invalid email",
+      life: 3000,
     });
     return;
   }
@@ -59,6 +61,7 @@ const register = async () => {
       severity: "error",
       summary: "Error",
       detail: "Password is not strong enough",
+      life: 3000,
     });
     return;
   }
@@ -69,6 +72,7 @@ const register = async () => {
       severity: "error",
       summary: "Error",
       detail: "Passwords do not match",
+      life: 3000,
     });
     return;
   }
@@ -78,6 +82,7 @@ const register = async () => {
     severity: response.data.success ? "success" : "error",
     summary: response.data.success ? "Success" : "Error",
     detail: response.data.message,
+    life: 3000,
   });
 
   if (response.data.success) {
@@ -88,6 +93,7 @@ const register = async () => {
           severity: "error",
           summary: "Error",
           detail: res.data.message,
+          life: 3000,
         });
       }
       dialogRef.value.close();

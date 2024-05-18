@@ -19,6 +19,7 @@ const handleJoin = async () => {
       severity: "error",
       summary: "Invalid Code",
       detail: "Code must be 5 characters long",
+      life: 3000,
     });
     return;
   } else if (/^[a-z0-9]+$/i.test(code.value) === false) {
@@ -26,6 +27,7 @@ const handleJoin = async () => {
       severity: "error",
       summary: "Invalid Code",
       detail: "Code must contain only letters and numbers",
+      life: 3000,
     });
     return;
   }
@@ -35,6 +37,7 @@ const handleJoin = async () => {
       severity: "error",
       summary: "Error",
       detail: state.error,
+      life: 3000,
     });
     return;
   }

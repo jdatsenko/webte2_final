@@ -168,6 +168,9 @@ class Question
 
     $questionId = $question["data"]["question"]["id"];
 
+    $queryArc = "DELETE FROM Archive WHERE question_id = $questionId";
+    mysqli_query($this->conn, $queryArc);
+
     $queryResponse = "DELETE FROM Response WHERE question_id = $questionId";
     mysqli_query($this->conn, $queryResponse);
 

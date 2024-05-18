@@ -62,6 +62,7 @@ function getSplitButtonItems(data) {
             severity: "success",
             summary: "Success",
             detail: res.data.message,
+            life: 3000,
           });
           await refetchUsers();
         } else {
@@ -69,6 +70,7 @@ function getSplitButtonItems(data) {
             severity: "error",
             summary: "Error",
             detail: res.data.message,
+            life: 3000,
           });
         }
       },
@@ -83,6 +85,7 @@ function getSplitButtonItems(data) {
             severity: "success",
             summary: "Success",
             detail: res.data.message,
+            life: 3000,
           });
           await refetchUsers();
         } else {
@@ -90,6 +93,7 @@ function getSplitButtonItems(data) {
             severity: "error",
             summary: "Error",
             detail: res.data.message,
+            life: 3000,
           });
         }
       },
@@ -146,6 +150,7 @@ async function changeUsername() {
       severity: "error",
       summary: "Error",
       detail: "Username cannot be empty",
+      life: 3000,
     });
     return;
   }
@@ -158,6 +163,7 @@ async function changeUsername() {
       severity: "success",
       summary: "Success",
       detail: res.data.message,
+      life: 3000,
     });
     editUserDialogVisible.value = false;
     const res = await refetchUsers();
@@ -166,6 +172,7 @@ async function changeUsername() {
         severity: "error",
         summary: "Error",
         detail: res.data.message,
+        life: 3000,
       });
     }
   } else {
@@ -173,6 +180,7 @@ async function changeUsername() {
       severity: "error",
       summary: "Error",
       detail: res.data.message,
+      life: 3000,
     });
   }
 }
@@ -193,6 +201,7 @@ const confirmDeleteUser = () => {
           severity: "success",
           summary: "Success",
           detail: res.data.message,
+          life: 3000,
         });
         const res = await refetchUsers();
         if (!res.data.success) {
@@ -200,12 +209,14 @@ const confirmDeleteUser = () => {
             severity: "error",
             summary: "Error",
             detail: res.data.message,
+            life: 3000,
           });
         }
       } else {
         toast.add({
           severity: "error",
           summary: "Error",
+          life: 3000,
           detail: res.data.message,
         });
       }

@@ -18,6 +18,7 @@ const logout = async () => {
     severity: res.data.success ? "success" : "error",
     summary: res.data.success ? "Success" : "Error",
     detail: res.data.message,
+    life: 3000,
   });
   if (!res.data.success) {
     return;
@@ -26,9 +27,6 @@ const logout = async () => {
   state.isLogged = false;
   router.push("/");
 };
-
-
-
 </script>
 
 <template>

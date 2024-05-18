@@ -28,6 +28,7 @@ const changePassword = async () => {
       severity: "error",
       summary: "Error",
       detail: "Password is not strong enough",
+      life: 3000,
     });
     return;
   }
@@ -38,6 +39,7 @@ const changePassword = async () => {
       severity: "error",
       summary: "Error",
       detail: "Passwords do not match",
+      life: 3000,
     });
     return;
   }
@@ -47,6 +49,7 @@ const changePassword = async () => {
       severity: "error",
       summary: "Error",
       detail: "new Password and old Password are required",
+      life: 3000,
     });
     return;
   }
@@ -61,6 +64,7 @@ const changePassword = async () => {
       severity: "success",
       summary: "Success",
       detail: response.data.message,
+      life: 3000,
     });
 
     router.push("/");
@@ -69,6 +73,7 @@ const changePassword = async () => {
       severity: "error",
       summary: "Error",
       detail: response.data.message,
+      life: 3000,
     });
   }
 };

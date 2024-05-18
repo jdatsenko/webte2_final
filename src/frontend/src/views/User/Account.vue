@@ -56,23 +56,25 @@ function getSplitButtonItems(data) {
     },
     {
       label: "Delete",
-      command: () => {
+      command: async () => {
         const code = data.code;
-        toast.add({
-          severity: "warn",
-          summary: `Delete ${code}`,
-          detail: "Delete",
-          life: 3000,
-        });
-
-        DeleteQuestion.post({ code })
-          .then((response) => {
-            getUserQuestions();
-            console.log(response);
-          })
-          .catch((error) => {
-            console.error("Error deleting question:", error);
+        const res = await DeleteQuestion.post({ code });
+        if (res.data.success) {
+          toast.add({
+            severity: "success",
+            summary: "Success",
+            detail: res.data.message,
+            life: 3000,
           });
+          getUserQuestions();
+        } else {
+          toast.add({
+            severity: "error",
+            summary: "Error",
+            detail: res.data.message,
+            life: 3000,
+          });
+        }
       },
     },
   ];
@@ -86,6 +88,7 @@ function getSplitButtonItems(data) {
           severity: "success",
           summary: res.data.success ? "Success" : "Error",
           detail: res.data.message,
+          life: 3000,
         });
 
         await getUserQuestions();
@@ -94,6 +97,7 @@ function getSplitButtonItems(data) {
           severity: "error",
           summary: res.data.success ? "Success" : "Error",
           detail: res.data.message,
+          life: 3000,
         });
       }
     },

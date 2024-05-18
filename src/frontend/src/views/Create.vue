@@ -55,6 +55,7 @@ const createQuestion = async () => {
       severity: "error",
       summary: "Invalid Input",
       detail: "Fill all the fields",
+      life: 3000,
     });
     return;
   }
@@ -65,6 +66,7 @@ const createQuestion = async () => {
         severity: "error",
         summary: "Invalid Input",
         detail: "You need to add at least two answers",
+        life: 3000,
       });
       return;
     }
@@ -74,6 +76,7 @@ const createQuestion = async () => {
         severity: "error",
         summary: "Invalid Input",
         detail: "You need to select at least one right answer",
+        life: 3000,
       });
       return;
     }
@@ -87,16 +90,18 @@ const createQuestion = async () => {
       severity: "success",
       summary: "Success",
       detail: response.data.message,
+      life: 3000,
     });
     router.push({
-      name: "questionStats",
-      params: { code: response.data.data.code },
+      name: "result",
+      params: { questionCode: response.data.data.code },
     });
   } else {
     toast.add({
       severity: "error",
       summary: "Error",
       detail: response.data.message,
+      life: 3000,
     });
   }
 };

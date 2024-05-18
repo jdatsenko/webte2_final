@@ -25,6 +25,7 @@ const login = async () => {
       severity: "error",
       summary: "Error",
       detail: "Email and password are required",
+      life: 3000,
     });
     return;
   }
@@ -39,6 +40,7 @@ const login = async () => {
       severity: "success",
       summary: "Success",
       detail: response.data.message,
+      life: 3000,
     });
 
     await getUserInfo();
@@ -48,6 +50,7 @@ const login = async () => {
       severity: "error",
       summary: "Error",
       detail: response.data.message,
+      life: 3000,
     });
   }
 };
