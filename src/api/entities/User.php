@@ -166,7 +166,6 @@ class User
           FROM Question 
           LEFT JOIN Response ON Question.id = Response.question_id 
           LEFT JOIN users ON Question.user_id = users.id
-          WHERE Question.user_id = " . $this->auth->getUserId() . "
           GROUP BY Question.id";
     } else {
       $query = "SELECT Question.*, COUNT(Response.question_id) AS response_count

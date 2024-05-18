@@ -22,6 +22,7 @@ export const useUserStore = () =>
     }
 
     async function getUserQuestions() {
+      state.questions = [];
       const res = await GetUserQuestions.get();
       if (res.data.success) {
         state.questions = res.data.data;

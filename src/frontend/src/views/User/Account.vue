@@ -11,6 +11,7 @@ import SplitButton from "primevue/splitbutton";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
+import Dropdown from "primevue/dropdown";
 import { DeleteQuestion, DuplicateQuestion, ChangeQuestionStatus } from "@/api";
 
 const { state, getUserQuestions } = useUserStore();
@@ -19,6 +20,14 @@ const toast = useToast();
 
 onMounted(async () => {
   await getUserQuestions();
+  uniqueSubjects.value = [
+    ...new Set(state.questions.map((q) => q.subject)),
+  ].map((subject) => ({ subject }));
+  if (state.user.isAdmin) {
+    uniqueUsernames.value = [
+      ...new Set(state.questions.map((q) => q.username)),
+    ].map((username) => ({ username }));
+  }
 });
 
 function getSplitButtonItems(data) {
@@ -112,6 +121,12 @@ const showQRCode = (code) => {
 
 const isDialogVisible = ref(false);
 const qrCodeURL = ref("");
+
+const uniqueSubjects = ref([]);
+const selectedSubject = ref(null);
+
+const uniqueUsernames = ref([]);
+const selectedUsername = ref(null);
 </script>
 
 <template>
@@ -125,8 +140,39 @@ const qrCodeURL = ref("");
 
     <div>
       <h3>Questions:</h3>
+      <div class="flex flex-row gap-2">
+        <Dropdown
+          v-model="selectedSubject"
+          :options="uniqueSubjects"
+          optionLabel="subject"
+          placeholder="Select a subject"
+          showClear
+          class="w-12rem"
+        />
+        <Dropdown
+          v-model="selectedUsername"
+          :options="uniqueUsernames"
+          optionLabel="username"
+          placeholder="Select a user"
+          showClear
+          v-if="state.user.isAdmin"
+          class="w-12rem"
+        />
+      </div>
       <DataTable
-        :value="state.questions"
+        :value="
+          state.questions
+            .filter(
+              (q) =>
+                selectedSubject === null ||
+                q.subject === selectedSubject.subject
+            )
+            .filter(
+              (q) =>
+                selectedUsername === null ||
+                q.username === selectedUsername.username
+            )
+        "
         paginator
         stripedRows
         :rows="5"
