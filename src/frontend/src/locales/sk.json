@@ -16,7 +16,7 @@
     "title": "Stranka nebola najdena"
   },
   "Create": {
-    "title": "Vytvorit otazku", 
+    "title": "Vytvorit otazku",
     "button-create": "Vytvorit",
     "question": "Otazka:",
     "subject": "Tema:",
@@ -25,113 +25,112 @@
   "Created": {
     "title": "Otázka bola vytvorená s kódom: "
   },
-    "App": {
-      "title": "Domov",
-      "create": "Vytvoriť",
-      "modalTitle": "Používateľská príručka pre hlasovaciu aplikáciu",
-      "modalText": {
-        "part1": "Prehľad",
-        "part2": "Táto hlasovacia aplikácia umožňuje používateľom účasť na hlasovaní, zobrazenie výsledkov a pre overených používateľov vytvárať a spravovať otázky na hlasovanie. Administrátori majú dodatočné správcovské oprávnenia.",
-        "part3": "Prístup k otázkam na hlasovanie",
-        "part4": [
-          {
-            "step": "1",
-            "description": "QR kód: Naskenujte QR kód."
-          },
-          {
-            "step": "2",
-            "description": "Kód pre vstup: Zadajte kód na domovskej stránke."
-          },
-          {
-            "step": "3",
-            "description": "Priamy URL odkaz: Prejdite na https://nodeXX.webte.fei.stuba.sk/abcde (nahraďte abcde 5-znakovým kódom)."
-          }
-        ],
-        "part5": "Neoverení používatelia",
-        "part6": [
-          {
-            "step": "1",
-            "description": "Prístup a odoslanie hlasov."
-          },
-          {
-            "step": "2",
-            "description": "Zobrazenie výsledkov hlasovania."
-          }
-        ],
-        "part7": "Overení používatelia",
-        "part8": [
-          {
-            "step": "1",
-            "description": "Prihlásiť sa: Zadajte vaše prihlasovacie údaje."
-          },
-          {
-            "step": "2",
-            "description": "Zmeniť heslo: Aktualizujte vaše heslo."
-          },
-          {
-            "step": "3",
-            "description": "Vytvoriť otázky: Definujte viacero otázok na hlasovanie."
-          },
-          {
-            "step": "4",
-            "description": "Generovať kódy: Vytvorte QR a vstupné kódy."
-          },
-          {
-            "step": "5",
-            "description": "Typy otázok: Vyberte viacero možností alebo otvorenú odpoveď."
-          },
-          {
-            "step": "6",
-            "description": "Zobrazenie výsledkov: Formát zoznamu alebo slovného oblaku."
-          },
-          {
-            "step": "7",
-            "description": "Spravovať otázky: Upraviť, zmazať a kopírovať."
-          },
-          {
-            "step": "8",
-            "description": "Filtrovať: Podľa predmetu alebo dátumu."
-          },
-          {
-            "step": "9",
-            "description": "Zobraziť výsledky: Aktuálne a archivované."
-          },
-          {
-            "step": "10",
-            "description": "Zatvoriť otázky: Archivovať odpovede a reštartovať hlasovanie."
-          },
-          {
-            "step": "11",
-            "description": "Kategorizovať: Definovať predmet."
-          },
-          {
-            "step": "12",
-            "description": "Exportovať dáta: CSV, JSON, XML."
-          }
-        ],
-        "part9": "Administrátori",
-        "part10": [
-          {
-            "step": "1",
-            "description": "Všetky funkcie overených používateľov."
-          },
-          {
-            "step": "2",
-            "description": "Spravovať všetky používateľské otázky."
-          },
-          {
-            "step": "3",
-            "description": "Vytvárať otázky pre iných používateľov."
-          },
-          {
-            "step": "4",
-            "description": "Plné správanie používateľských účtov (CRUD, zmeny rolí)."
-          }
-        ]
-      }
-    },
-  
- "Account": {
+  "App": {
+    "title": "Domov",
+    "create": "Vytvoriť",
+    "modalTitle": "Používateľská príručka pre hlasovaciu aplikáciu",
+    "modalText": {
+      "part1": "Prehľad",
+      "part2": "Táto hlasovacia aplikácia umožňuje používateľom účasť na hlasovaní, zobrazenie výsledkov a pre overených používateľov vytvárať a spravovať otázky na hlasovanie. Administrátori majú dodatočné správcovské oprávnenia.",
+      "part3": "Prístup k otázkam na hlasovanie",
+      "part4": [
+        {
+          "step": "1",
+          "description": "QR kód: Naskenujte QR kód."
+        },
+        {
+          "step": "2",
+          "description": "Kód pre vstup: Zadajte kód na domovskej stránke."
+        },
+        {
+          "step": "3",
+          "description": "Priamy URL odkaz: Prejdite na https://nodeXX.webte.fei.stuba.sk/abcde (nahraďte abcde 5-znakovým kódom)."
+        }
+      ],
+      "part5": "Neoverení používatelia",
+      "part6": [
+        {
+          "step": "1",
+          "description": "Prístup a odoslanie hlasov."
+        },
+        {
+          "step": "2",
+          "description": "Zobrazenie výsledkov hlasovania."
+        }
+      ],
+      "part7": "Overení používatelia",
+      "part8": [
+        {
+          "step": "1",
+          "description": "Prihlásiť sa: Zadajte vaše prihlasovacie údaje."
+        },
+        {
+          "step": "2",
+          "description": "Zmeniť heslo: Aktualizujte vaše heslo."
+        },
+        {
+          "step": "3",
+          "description": "Vytvoriť otázky: Definujte viacero otázok na hlasovanie."
+        },
+        {
+          "step": "4",
+          "description": "Generovať kódy: Vytvorte QR a vstupné kódy."
+        },
+        {
+          "step": "5",
+          "description": "Typy otázok: Vyberte viacero možností alebo otvorenú odpoveď."
+        },
+        {
+          "step": "6",
+          "description": "Zobrazenie výsledkov: Formát zoznamu alebo slovného oblaku."
+        },
+        {
+          "step": "7",
+          "description": "Spravovať otázky: Upraviť, zmazať a kopírovať."
+        },
+        {
+          "step": "8",
+          "description": "Filtrovať: Podľa predmetu alebo dátumu."
+        },
+        {
+          "step": "9",
+          "description": "Zobraziť výsledky: Aktuálne a archivované."
+        },
+        {
+          "step": "10",
+          "description": "Zatvoriť otázky: Archivovať odpovede a reštartovať hlasovanie."
+        },
+        {
+          "step": "11",
+          "description": "Kategorizovať: Definovať predmet."
+        },
+        {
+          "step": "12",
+          "description": "Exportovať dáta: CSV, JSON, XML."
+        }
+      ],
+      "part9": "Administrátori",
+      "part10": [
+        {
+          "step": "1",
+          "description": "Všetky funkcie overených používateľov."
+        },
+        {
+          "step": "2",
+          "description": "Spravovať všetky používateľské otázky."
+        },
+        {
+          "step": "3",
+          "description": "Vytvárať otázky pre iných používateľov."
+        },
+        {
+          "step": "4",
+          "description": "Plné správanie používateľských účtov (CRUD, zmeny rolí)."
+        }
+      ]
+    }
+  },
+  "Account": {
     "title": "Môj účet",
     "changePassword": "Zmeniť heslo",
     "oldPassword": "Staré heslo",

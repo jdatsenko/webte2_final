@@ -32,7 +32,7 @@ if ($method == 'GET') {
     if ($subEndpoint == 'all') {
       echo $questionController->getAllQuestions();
     } else if ($subEndpoint) {
-      echo $questionController->getQuestionByCode($subEndpoint);
+      echo $questionController->getQuestion($subEndpoint);
     } else {
       echo json_encode(array('error' => 'Invalid question endpoint'));
     }
@@ -40,6 +40,12 @@ if ($method == 'GET') {
     if ($subEndpoint) {
       echo $answerController->getAnswers($subEndpoint);
     }
+  } else if ($endpoint == 'results') {
+    if ($subEndpoint) {
+      echo $questionController->getQuestionByCode($subEndpoint);
+    }
+  } else {
+    echo json_encode(array('error'=> 'Invalid endpoint'));
   }
 } else if ($method == 'POST') {
   if ($endpoint == 'users') {
@@ -75,6 +81,8 @@ if ($method == 'GET') {
       echo $questionController->duplicateQuestion($data);
     } else if($subEndpoint == "edit"){
       echo $questionController->editQuestion($data);
+    } else if($subEndpoint == "changeStatus"){
+      echo $questionController->changeQuestionActive($data);
     } else {
       echo json_encode(array('error' => 'Invalid endpoint'));
     }

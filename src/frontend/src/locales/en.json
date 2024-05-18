@@ -34,29 +34,32 @@
       "part2": "This voting application allows users to participate in voting, view results, and for authenticated users, create and manage voting questions. Administrators have additional management privileges.",
       "part3": "Accessing Voting Questions",
       "part4": [
-          {
-            "step": "1",
-            "description": "QR Code: Scan the QR code."
-          },
-          {
-            "step": "2",
-            "description": "Entry Code: Enter the code on the home page."
-          },
-          {
-            "step": "3",
-            "description": "Direct URL: Go to https://nodeXX.webte.fei.stuba.sk/abcde (replace abcde with the 5-character code)."
-          }
-        ],
-        "part5": "Unauthenticated Users",
-        "part6": [{
-            "step": "1",
-            "description": "Access and submit votes."
-          },{
-            "step": "2",
-            "description": "View voting results"
-          }],
-        "part7": "Authenticated Users",
-        "part8": [
+        {
+          "step": "1",
+          "description": "QR Code: Scan the QR code."
+        },
+        {
+          "step": "2",
+          "description": "Entry Code: Enter the code on the home page."
+        },
+        {
+          "step": "3",
+          "description": "Direct URL: Go to https://nodeXX.webte.fei.stuba.sk/abcde (replace abcde with the 5-character code)."
+        }
+      ],
+      "part5": "Unauthenticated Users",
+      "part6": [
+        {
+          "step": "1",
+          "description": "Access and submit votes."
+        },
+        {
+          "step": "2",
+          "description": "View voting results"
+        }
+      ],
+      "part7": "Authenticated Users",
+      "part8": [
         {
           "step": "1",
           "description": "Log In: Enter your credentials."
@@ -123,11 +126,11 @@
         {
           "step": "4",
           "description": "Full user account management (CRUD, role changes)."
-        }]},
+        }
+      ]
+    }
+  },
 
-
-
-      
   "Account": {
     "title": "My Account",
     "changePassword": "Change Password",
@@ -137,6 +140,3 @@
     "save": "Save"
   }
 }
-  }
-
-

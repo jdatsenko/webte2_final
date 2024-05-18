@@ -20,6 +20,29 @@ class Question
     return json_encode($questions);
   }
 
+    public function getQuestion($code)
+  {
+    $query = "SELECT * FROM Question WHERE code LIKE '$code'";
+    $result = mysqli_query($this->conn, $query);
+    $question = mysqli_fetch_assoc($result);
+    if (!$question) {
+      die(json_encode(["success" => false, "message" => "Question not found"]));
+    }
+
+    if ($question["isActive"] == 0) {
+      die(json_encode(["success" => false, "message" => "Question is not active"]));
+    }
+
+    $answersQuery = "SELECT id, answer FROM Answer WHERE question_id = " . $question["id"];
+    $answersResult = mysqli_query($this->conn, $answersQuery);
+    $answers = [];
+    while ($row = mysqli_fetch_assoc($answersResult)) {
+      $answers[] = $row;
+    }
+
+    return json_encode(["success" => true, "data" => ["question" => $question, "answers" => $answers]]);
+  }
+
   public function getQuestionByCode($code)
   {
     $query = "SELECT * FROM Question WHERE code LIKE '$code'";
@@ -112,7 +135,7 @@ class Question
     if ($question["success"] == false) {
       die(json_encode(["success" => false, "message" => "Question not found"]));
     }
-    if ($question["data"]["question"]["user_id"] != $userId) {
+    if ($question["data"]["question"]["user_id"] != $userId && !$this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
       die(json_encode(["success" => false, "message" => "You are not the owner of this question"]));
     }
 
@@ -134,14 +157,12 @@ class Question
     
     $userId = $this->auth->getUserId();
     $questionCode = $data["code"] ?? null;
-    $questionType = $data["type"] ?? null;
-    var_dump($questionType);
     $question = json_decode($this->getQuestionByCode($questionCode), true);
     if ($question["success"] == false) {
         die(json_encode(["success" => false, "message" => "Question not found"]));
     }
     
-    if ($question["data"]["question"]["user_id"] != $userId) {
+    if ($question["data"]["question"]["user_id"] != $userId && !$this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
         die(json_encode(["success" => false, "message" => "You are not the owner of this question"]));
     }
 
@@ -169,10 +190,9 @@ class Question
     if ($question["success"] == false) {
       die(json_encode(["success" => false, "message" => "Question not found"]));
     }
-    if ($question["data"]["question"]["user_id"] != $userId) {
+    if ($question["data"]["question"]["user_id"] != $userId && !$this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
       die(json_encode(["success" => false, "message" => "You are not the owner of this question"]));
     }
-    var_dump($question);
     $questionId = $question["data"]["question"]["id"];
     $questionType = $question["data"]["question"]["type"];
     $questionSubject = $question["data"]["question"]["subject"];
@@ -202,7 +222,7 @@ class Question
     if ($question["success"] == false) {
       die(json_encode(["success" => false, "message" => "Question not found"]));
     }
-    if ($question["data"]["question"]["user_id"] != $userId) {
+    if ($question["data"]["question"]["user_id"] != $userId && !$this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
       die(json_encode(["success" => false, "message" => "You are not the owner of this question"]));
     }
     $questionId = $question["data"]["question"]["id"];
@@ -234,4 +254,33 @@ class Question
     return json_encode(["success" => true, "message" => "Question edited successfully"]);
   }
 
+  public function changeQuestionActive($data) {
+    if (!$this->auth->isLoggedIn()) {
+      die(json_encode(['success' => false, 'message' => 'You are not logged in']));
+    }
+    $userId = $this->auth->getUserId();
+    $questionCode = $data["code"] ?? null;
+    $question = json_decode($this->getQuestionByCode($questionCode), true);
+    if ($question["success"] == false) {
+        die(json_encode(["success" => false, "message" => "Question not found"]));
+    }
+    
+    if ($question["data"]["question"]["user_id"] != $userId && !$this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
+        die(json_encode(["success" => false, "message" => "You are not the owner of this question"]));
+    }
+    $newStatus = $question["data"]["question"]["isActive"] == 1 ? 0 : 1;
+    $query = "UPDATE Question SET isActive = '$newStatus'
+               WHERE code LIKE '$questionCode'";
+    $result = mysqli_query($this->conn, $query);
+    if ($result === false) {
+        die(json_encode(["success" => false, "message" => "Error updating question active status"]));
+    }
+
+    if ($newStatus == 0) {
+        $archiveQuery = "INSERT INTO Archive (question_id, closed_at) VALUES (" . $question["data"]["question"]["id"] . ", NOW())";
+        mysqli_query($this->conn, $archiveQuery);
+    }
+
+    return json_encode(["success" => true, "message" => "Question active status updated"]);      
+  }
 }

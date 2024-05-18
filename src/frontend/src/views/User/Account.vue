@@ -11,8 +11,7 @@ import SplitButton from "primevue/splitbutton";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
-import { DeleteQuestion } from "@/api";
-import { DuplicateQuestion } from "@/api";
+import { DeleteQuestion, DuplicateQuestion, ChangeQuestionStatus } from "@/api";
 
 const { state, getUserQuestions } = useUserStore();
 
@@ -23,7 +22,7 @@ onMounted(async () => {
 });
 
 function getSplitButtonItems(data) {
-  return [
+  const items = [
     {
       label: "Edit",
       command: () => {
@@ -77,6 +76,29 @@ function getSplitButtonItems(data) {
       },
     },
   ];
+  items.push({
+    label: data.isActive ? "Deactivate" : "Activate",
+    command: async () => {
+      const code = data.code;
+      const res = await ChangeQuestionStatus.post({ code });
+      if (res.data.success) {
+        toast.add({
+          severity: "success",
+          summary: res.data.success ? "Success" : "Error",
+          detail: res.data.message,
+        });
+
+        await getUserQuestions();
+      } else {
+        toast.add({
+          severity: "error",
+          summary: res.data.success ? "Success" : "Error",
+          detail: res.data.message,
+        });
+      }
+    },
+  });
+  return items;
 }
 
 const showQRCode = (code) => {
@@ -98,7 +120,7 @@ const qrCodeURL = ref("");
     </div>
 
     <div>
-      <h3>My questions:</h3>
+      <h3>Questions:</h3>
       <DataTable
         :value="state.questions"
         paginator
@@ -121,6 +143,20 @@ const qrCodeURL = ref("");
         <Column field="subject" header="Subject"></Column>
         <Column field="question" header="Question"></Column>
         <Column field="response_count" header="Reponses"></Column>
+        <Column
+          v-if="state.user.isAdmin"
+          field="username"
+          header="Username"
+        ></Column>
+        <Column field="isActive" header="Is Active?">
+          <template #body="slotProps">
+            <Tag
+              :value="slotProps.data.isActive == '1' ? 'Yes' : 'No'"
+              :severity="slotProps.data.isActive == '1' ? 'success' : 'danger'"
+              rounded
+            />
+          </template>
+        </Column>
         <Column field="type" header="Type">
           <template #body="slotProps">
             <Tag

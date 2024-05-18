@@ -117,7 +117,7 @@ export const GetAllQuestions = ((url) => ({
 
 export const DeleteQuestion = ((url) => ({
   post: (code) => {
-    return axios.post(url, code)
+    return axios.post(url, code);
   },
 }))("/api/questions/delete/");
 
@@ -126,6 +126,12 @@ export const GetQuestionByCode = ((url) => ({
     return axios.get(url.replace("{code}", code));
   },
 }))("/api/questions/{code}");
+
+export const GetQuestionResults = ((url) => ({
+  get: (code) => {
+    return axios.get(url.replace("{code}", code));
+  },
+}))("/api/results/{code}");
 
 export const EditQuestion = ((url) => ({
   post: (data) => {
@@ -138,6 +144,12 @@ export const CreateQuestion = ((url) => ({
     return axios.post(url, data);
   },
 }))("/api/questions/create");
+
+export const ChangeQuestionStatus = ((url) => ({
+  post: (data) => {
+    return axios.post(url, data);
+  },
+}))("/api/questions/changeStatus");
 
 export const DuplicateQuestion = ((url) => ({
   post: (code) => {

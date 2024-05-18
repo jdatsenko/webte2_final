@@ -27,14 +27,7 @@ const confirm = useConfirm();
 const { state, refetchUsers } = useAdminStore();
 
 onMounted(async () => {
-  const res = await refetchUsers();
-  if (!res.data.success) {
-    toast.add({
-      severity: "error",
-      summary: "Error",
-      detail: res.data.message,
-    });
-  }
+  await refetchUsers();
 });
 
 const selectedUser = ref({});
@@ -70,14 +63,7 @@ function getSplitButtonItems(data) {
             summary: "Success",
             detail: res.data.message,
           });
-          const res = await refetchUsers();
-          if (!res.data.success) {
-            toast.add({
-              severity: "error",
-              summary: "Error",
-              detail: res.data.message,
-            });
-          }
+          await refetchUsers();
         } else {
           toast.add({
             severity: "error",
@@ -98,14 +84,7 @@ function getSplitButtonItems(data) {
             summary: "Success",
             detail: res.data.message,
           });
-          const res = await refetchUsers();
-          if (!res.data.success) {
-            toast.add({
-              severity: "error",
-              summary: "Error",
-              detail: res.data.message,
-            });
-          }
+          await refetchUsers();
         } else {
           toast.add({
             severity: "error",

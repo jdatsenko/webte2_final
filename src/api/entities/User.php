@@ -116,7 +116,7 @@ class User
     }
   }
 
-    public function revokeAdminById($data)
+  public function revokeAdminById($data)
   {
     if (!$this->auth->isLoggedIn()) {
       die(json_encode(['success' => false, 'message' => 'You are not logged in']));
@@ -160,11 +160,23 @@ class User
     if (!$this->auth->isLoggedIn()) {
       die(json_encode(['success' => false, 'message' => 'You are not logged in']));
     }
-    $query = "SELECT Question.*, COUNT(Response.question_id) AS response_count 
+
+    if ($this->auth->hasRole(\Delight\Auth\Role::ADMIN)) {
+      $query = "SELECT Question.*, COUNT(Response.question_id) AS response_count, users.username
           FROM Question 
           LEFT JOIN Response ON Question.id = Response.question_id 
+          LEFT JOIN users ON Question.user_id = users.id
           WHERE Question.user_id = " . $this->auth->getUserId() . "
           GROUP BY Question.id";
+    } else {
+      $query = "SELECT Question.*, COUNT(Response.question_id) AS response_count
+                FROM Question 
+                LEFT JOIN Response ON Question.id = Response.question_id 
+                WHERE Question.user_id = " . $this->auth->getUserId() . "
+                GROUP BY Question.id";
+    }
+
+
     $result = mysqli_query($this->conn, $query);
     $questions = [];
     while ($row = mysqli_fetch_assoc($result)) {
