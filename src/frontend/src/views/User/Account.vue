@@ -110,8 +110,8 @@ const qrCodeURL = ref("");
           <template #body="slotProps">
             <router-link
               :to="{
-                name: 'questionStats',
-                params: { code: slotProps.data.code },
+                name: 'result',
+                params: { questionCode: slotProps.data.code },
               }"
             >
               <b>{{ slotProps.data.code }}</b>
