@@ -53,6 +53,7 @@ const handleJoin = async () => {
       :loading="state.loading"
       :label="t('Home.button-join')"
       @click="handleJoin"
+      class="mt-3"
     />
   </div>
 </template>

@@ -86,7 +86,7 @@
         },
         {
           "step": "7",
-          "description": "Manage Questions: Edit, delete, and copy."
+          "description": "Manage Questions: Delete, copy or deactivate."
         },
         {
           "step": "8",
