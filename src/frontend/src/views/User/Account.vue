@@ -33,17 +33,6 @@ onMounted(async () => {
 function getSplitButtonItems(data) {
   const items = [
     {
-      label: "Edit",
-      command: () => {
-        toast.add({
-          severity: "success",
-          summary: "Edit",
-          detail: "Edit",
-          life: 3000,
-        });
-      },
-    },
-    {
       label: "Duplicate",
       command: () => {
         const code = data.code;

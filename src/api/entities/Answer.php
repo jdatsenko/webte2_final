@@ -18,14 +18,6 @@ class Answer
     $this->conn->query($query);
     return json_encode(["success" => true, "message" => "Answer added successfully"]);
   }
-
-  public function deleteAnswer($data)
-  {
-    $answerId = $data["answerID"];
-    $query = "DELETE FROM Answer WHERE id = $answerId";
-    $this->conn->query($query);
-    return json_encode(["success" => true, "message" => "Answer deleted successfully"]);
-  }
   public function answerQuestion($data)
   {
     $userId = $this->auth->getUserId();

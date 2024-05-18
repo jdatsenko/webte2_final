@@ -133,11 +133,6 @@ export const GetQuestionResults = ((url) => ({
   },
 }))("/api/results/{code}");
 
-export const EditQuestion = ((url) => ({
-  post: (data) => {
-    return axios.post(url, data);
-  },
-}))("/api/questions/edit");
 
 export const CreateQuestion = ((url) => ({
   post: (data) => {

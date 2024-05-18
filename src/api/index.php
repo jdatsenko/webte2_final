@@ -79,8 +79,6 @@ if ($method == 'GET') {
       echo $questionController->deleteQuestion($data);
     } else if($subEndpoint == "duplicate") {
       echo $questionController->duplicateQuestion($data);
-    } else if($subEndpoint == "edit"){
-      echo $questionController->editQuestion($data);
     } else if($subEndpoint == "changeStatus"){
       echo $questionController->changeQuestionActive($data);
     } else {
