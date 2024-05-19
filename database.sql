@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: May 16, 2024 at 02:11 PM
+-- Generation Time: May 19, 2024 at 01:21 PM
 -- Server version: 8.0.32
 -- PHP Version: 8.2.8
 
@@ -39,21 +39,16 @@ CREATE TABLE `Answer` (
 --
 
 INSERT INTO `Answer` (`id`, `question_id`, `isRight`, `answer`) VALUES
-(1, 8, 0, '1'),
-(2, 8, 1, '2'),
-(3, 8, 1, '3'),
-(4, 8, 0, '4'),
-(5, 9, 0, 'qwe'),
-(6, 9, 1, '123'),
-(7, 10, 1, 'Noone'),
-(8, 10, 0, 'Wow me'),
-(9, 10, 0, 'nah'),
-(10, 11, 1, 'йцу'),
-(11, 11, 0, 'йцу'),
-(12, 12, 1, 'йцу'),
-(13, 12, 0, 'йцу'),
-(14, 13, 0, 'zxc'),
-(15, 13, 1, 'zxc');
+(16, 16, 0, 'Paris'),
+(17, 16, 1, 'London'),
+(18, 16, 0, 'Berlin'),
+(19, 16, 0, 'Bratislava'),
+(20, 20, 0, '101'),
+(21, 20, 0, '202'),
+(22, 20, 1, '206'),
+(23, 21, 1, 'France'),
+(24, 21, 0, 'Germany'),
+(25, 21, 0, 'Belgium');
 
 -- --------------------------------------------------------
 
@@ -89,13 +84,9 @@ CREATE TABLE `Question` (
 --
 
 INSERT INTO `Question` (`id`, `createdAt`, `user_id`, `subject`, `isActive`, `type`, `question`, `code`) VALUES
-(8, '2024-05-13 22:01:14', 3, 'Test', 1, 'choice', 'What?', 'xJ44m'),
-(9, '2024-05-13 22:03:20', 3, 'Test2', 1, 'choice', 'Test3', '6u2Pb'),
-(10, '2024-05-14 13:09:37', 3, 'Geography', 1, 'choice', 'Who killed MArk?', 'B2EAd'),
-(11, '2024-05-14 13:21:47', 3, 'йцу', 1, 'choice', 'йцу', 'sy5Jj'),
-(12, '2024-05-14 13:23:27', 3, 'йцу', 1, 'choice', 'йцу', 'v8uXj'),
-(13, '2024-05-14 13:23:57', 3, 'asd', 1, 'choice', 'asd', '22wvQ'),
-(14, '2024-05-16 14:08:46', 3, 'open', 1, 'answer', 'open2', 'Zz9h5');
+(16, '2024-05-18 11:53:00', 3, 'Geography', 1, 'choice', 'What is the capital of Great Britain?', 'nuvWb'),
+(20, '2024-05-18 12:10:08', 3, 'Biology', 1, 'choice', 'How many bones are in the human body?', 's6FsV'),
+(21, '2024-05-18 12:11:26', 4, 'General', 1, 'choice', 'Who gave the U.S. The Statue of Liberty?', '8szl9');
 
 -- --------------------------------------------------------
 
@@ -116,7 +107,10 @@ CREATE TABLE `Response` (
 --
 
 INSERT INTO `Response` (`id`, `question_id`, `user_id`, `answer_id`, `text`) VALUES
-(1, 8, 3, 1, '');
+(11, 16, 3, 16, ''),
+(12, 16, 3, 17, ''),
+(13, 16, 3, 18, ''),
+(14, 16, 3, 19, '');
 
 -- --------------------------------------------------------
 
@@ -143,11 +137,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `username`, `status`, `verified`, `resettable`, `roles_mask`, `registered`, `last_login`, `force_logout`) VALUES
-(1, 'test@gmail.com', '$2y$10$.o0nh/Sk/joxeAGXl8v5CuWj4DA3NIrUyq0VPe/GraenXBqOnZOz.', 'test', 0, 1, 1, 1, 1715292628, 1715294232, 2),
-(2, 'test2@gmail.com', '$2y$10$.08aZdDQuX4Az2jnSNRv5.SHn.RY4q3NxFF6a6HhfejR64fM527W6', 'test', 0, 1, 1, 0, 1715294249, 1715294261, 0),
-(3, 'admin@admin.com', '$2y$10$JNWRhLKHI3.4RXk0xvdzfuvnOHTrqshHbIx9es39jujEDPVZPrsuq', 'admin', 0, 1, 1, 1, 1715295439, 1715867775, 7),
-(4, 'user@gmail.com', '$2y$10$U2vktfOwnkB.XEql7jOyEu8Kx8TsnFa.SUysoe5opqAxEGMCA475i', 'user', 0, 1, 1, 0, 1715295696, NULL, 0),
-(5, 'test@test.com', '$2y$10$3pqsMV578Ar0aQBavDKK8exDMtDxKNH4gY0wVpU95VT.ua6kHtIS6', 'test', 0, 1, 1, 0, 1715295768, NULL, 0);
+(2, 'test2@gmail.com', '$2y$10$.08aZdDQuX4Az2jnSNRv5.SHn.RY4q3NxFF6a6HhfejR64fM527W6', 'test', 0, 1, 1, 1, 1715294249, 1715294261, 0),
+(3, 'admin@admin.com', '$2y$10$DmpT5ZvrbpL1TqremcQmX.uhCrdiTUSeqiqZe1qj5On3I.KX2pKpq', 'admin', 0, 1, 1, 1, 1715295439, 1716034346, 16),
+(4, 'user@gmail.com', '$2y$10$n8A6LM8OOG9lvNBvddAJGO5yD4YIlWGqcHNQFlNDzi4Nnt2UsDBM2', 'user', 0, 1, 1, 0, 1715295696, 1716034240, 3),
+(5, 'test@test.com', '$2y$10$3pqsMV578Ar0aQBavDKK8exDMtDxKNH4gY0wVpU95VT.ua6kHtIS6', 'test', 0, 1, 1, 0, 1715295768, NULL, 0),
+(6, 'testst@text.com', '$2y$10$5E.I5FM1WDeatZEQwvyaKuspMGaebY4.fIhYkKullhw3KQeHfywlq', 'testst@text.com', 0, 1, 1, 0, 1715876390, NULL, 0),
+(7, 'qwe@asd.adom', '$2y$10$gPmpkGN3nTAKSa62lSbno.XD915yxWDxYgjuyIHLM1cC97A2wV6wa', 'qwe@asd.adom', 0, 1, 1, 0, 1715876658, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -168,8 +163,7 @@ CREATE TABLE `users_remembered` (
 --
 
 INSERT INTO `users_remembered` (`id`, `user`, `selector`, `token`, `expires`) VALUES
-(7, 3, 'IyXLPlPEHsKE5LIY4VvOLTdX', '$2y$10$XJiP2zQw75PiibXMc2gyV.RWkRwkrfaD2c1bQIkRzP.xjaV7.byv6', 1715726530),
-(8, 3, 'IyTSZfuplUchusu8xGJHFhuT', '$2y$10$tMtMpGq0H2.FADLu5MDQu.1PrCZ8FZCsllGe1iK1qltUjRdKkJYZ.', 1715873896);
+(16, 3, 'BfG-KMZd1r31rFJrQWNAx5uX', '$2y$10$/wqVNHxUY9jqwM3e0GZPX.Y/REGANA9PhhKEGGmfVfJLRZ/OcS5Oy', 1716120746);
 
 -- --------------------------------------------------------
 
@@ -189,8 +183,8 @@ CREATE TABLE `users_throttling` (
 --
 
 INSERT INTO `users_throttling` (`bucket`, `tokens`, `replenished_at`, `expires_at`) VALUES
-('RZ5QgDxjDQHIzpHoNfdvC8MqW4blMzHr7oFN22ZvkPw', 74, 1715787496, 1716327496),
-('0HqL-0AQcCnmuqbcJF25m95LjmNz-4pg2BxPhPbtB98', 0.0726867, 1715295768, 1715727768),
+('RZ5QgDxjDQHIzpHoNfdvC8MqW4blMzHr7oFN22ZvkPw', 70.4978, 1716034346, 1716574346),
+('0HqL-0AQcCnmuqbcJF25m95LjmNz-4pg2BxPhPbtB98', 3.0062, 1715876658, 1716308658),
 ('dsvFjOr0D8G5ojcLW5BCrGMtUdLEHgmTA_C87q2o2dw', 18.5978, 1715294256, 1715330256),
 ('mgCy-8rDNBXh2evmUOZnyQuyeIEL75fq0ddhcvWv10Y', 499, 1715293718, 1715466518),
 ('UB6hmCM8ctOttAy5tl39Da2JsNDeuMTCaNNRO9FsAAA', 499, 1715294256, 1715467056);
@@ -259,37 +253,37 @@ ALTER TABLE `users_throttling`
 -- AUTO_INCREMENT for table `Answer`
 --
 ALTER TABLE `Answer`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `Archive`
 --
 ALTER TABLE `Archive`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Question`
 --
 ALTER TABLE `Question`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `Response`
 --
 ALTER TABLE `Response`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users_remembered`
 --
 ALTER TABLE `users_remembered`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables

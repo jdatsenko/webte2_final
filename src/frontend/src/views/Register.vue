@@ -35,8 +35,8 @@ const register = async () => {
   if (formData.username.length < 3) {
     toast.add({
       severity: "error",
-      summary: "Error",
-      detail: "Username must be at least 3 characters",
+      summary: t('Toast.error'),
+      detail: t('Toast.usernameLength'),
       life: 3000,
     });
     return;
@@ -47,8 +47,8 @@ const register = async () => {
   if (!emailRegex.test(formData.email)) {
     toast.add({
       severity: "error",
-      summary: "Error",
-      detail: "Invalid email",
+      summary: t('Toast.error'),
+      detail: t('Toast.invalidEmail'),
       life: 3000,
     });
     return;
@@ -59,8 +59,8 @@ const register = async () => {
   if (!passwordRegex.test(formData.password)) {
     toast.add({
       severity: "error",
-      summary: "Error",
-      detail: "Password is not strong enough",
+      summary: t('Toast.error'),
+      detail: t('Toast.passwordRequirements'),
       life: 3000,
     });
     return;
@@ -70,8 +70,8 @@ const register = async () => {
   if (formData.password !== formData.repeatPassword) {
     toast.add({
       severity: "error",
-      summary: "Error",
-      detail: "Passwords do not match",
+      summary: t('Toast.error'),
+      detail: t('Toast.passwordMatch'),
       life: 3000,
     });
     return;
@@ -80,7 +80,7 @@ const register = async () => {
   const response = await Register.post(formData);
   toast.add({
     severity: response.data.success ? "success" : "error",
-    summary: response.data.success ? "Success" : "Error",
+    summary: response.data.success ? t('Toast.success') : t('Toast.error'),
     detail: response.data.message,
     life: 3000,
   });
@@ -91,7 +91,7 @@ const register = async () => {
       if (!res.data.success) {
         toast.add({
           severity: "error",
-          summary: "Error",
+          summary: t('Toast.error'),
           detail: res.data.message,
           life: 3000,
         });
@@ -124,7 +124,7 @@ const register = async () => {
   </div>
   <div class="flex my-3 justify-content-center">
     <div class="flex flex-column gap-2">
-      <label for="value">Password</label>
+      <label for="value">{{ t('Register.password') }}</label>
       <Password
         v-model="formData.password"
         autocomplete="off"

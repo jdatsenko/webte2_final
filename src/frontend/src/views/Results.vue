@@ -1,4 +1,5 @@
 <script setup>
+import { t } from "@/i18n";
 import { ref, onMounted, toRaw, computed } from "vue";
 import Chart from "primevue/chart";
 import Fieldset from "primevue/fieldset";
@@ -169,7 +170,7 @@ function getRandomTextAlignment(index) {
         v-if="showChoiceChart && responses.length == 0"
         class="flex justify-content-center"
       >
-        <p>No responses yet</p>
+        <p>{{ t('Results.no-responses') }}</p>
       </div>
       <div v-if="showOpenChart" class="flex justify-content-center">
         <Fieldset legend="Answers" style="width: 60%">

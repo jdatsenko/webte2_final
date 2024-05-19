@@ -7,7 +7,8 @@
     "title": "Login"
   },
   "Register": {
-    "title": "Register"
+    "title": "Register",
+    "password": "Password"
   },
   "NotFound": {
     "title": "Not Found"
@@ -130,7 +131,6 @@
       ]
     }
   },
-
   "Account": {
     "title": "My Account",
     "changePassword": "Change Password",
@@ -138,5 +138,19 @@
     "newPassword": "New Password",
     "repeatPassword": "New Password again",
     "save": "Save"
+  },
+  "no-responses-yet": "No responses yet",
+  "item-n": "Item {0}",
+  "red-tostring-16-green-tostring-16-blue-tostring-16": "#{0}{1}{2}",
+  "Results": {
+    "no-responses": "No responses yet"
+  },
+  "Toast": {
+    "error": "Error",
+    "usernameLength": "Username must be at least 3 characters",
+    "success": "Success",
+    "invalidEmail": "Invalid email",
+    "passwordRequirements": "Password is not strong enough",
+    "passwordMatch": "Passwords do not match"
   }
 }

@@ -7,7 +7,8 @@
     "title": "Prihlasit sa"
   },
   "Register": {
-    "title": "Registrovat sa"
+    "title": "Registrovat sa",
+    "password": "Heslo"
   },
   "Question": {
     "not-found": "Otazka nebola najdena"
@@ -137,5 +138,16 @@
     "newPassword": "Nové heslo",
     "repeatPassword": "Nové heslo znova",
     "save": "Uložiť"
+  },
+  "Results": {
+    "no-responses": "Zatiaľ žiadne odpovede"
+  },
+  "Toast": {
+    "error": "Chyba",
+    "usernameLength": "Používateľské meno musí mať aspoň 3 znaky",
+    "success": "Úspech",
+    "invalidEmail": "Neplatný e-mail",
+    "passwordRequirements": "Heslo nie je dostatočne silné",
+    "passwordMatch": "Heslá sa nezhodujú"
   }
 }
