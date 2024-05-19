@@ -20,7 +20,7 @@ class Answer
   }
   public function answerQuestion($data)
   {
-    $userId = $this->auth->getUserId();
+    $userId = $this->auth->getUserId() ?? 3;
     $questionId = $data["questionID"];
     $answerId = $data["answerID"] ?? null;
     $text = $data["text"] ?? null;
